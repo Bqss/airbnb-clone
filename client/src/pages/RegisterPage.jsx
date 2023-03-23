@@ -6,11 +6,15 @@ export default function RegisterPage() {
       <div className="mb-64">
         <h1 className="text-4xl text-center mb-4">Register Page</h1>
         <form className="max-w-md mx-auto">
+          <input type="text" placeholder="yournamecd " />
           <input type="email" placeholder="example@gmail.com" />
           <input type="password" placeholder="password" />
           <button className="primary">Login</button>
           <div className="text-center py-2 text-gray-500">
-            Don't have an account yet? <Link className="underline text-black" to={"/register"}>Register Now</Link>
+            Allready a remember?{" "}
+            <Link className="underline text-black" to={"/login"}>
+              Login
+            </Link>
           </div>
         </form>
       </div>
