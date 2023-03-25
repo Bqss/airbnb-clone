@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useAsyncError } from "react-router-dom";
 import axios from "axios";
 
 export default function RegisterPage() {
@@ -7,13 +7,19 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function registerUser(ev) {
+  async function registerUser(ev) {
     ev.preventDefault();
-    axios.post("/register", {
-      name,
-      email,
-      password,
-    });
+    try {
+      await axios.post("/register", {
+        name,
+        email,
+        password,
+      });
+
+      alert("registration Succesfull. now you can log in");
+    } catch (e) {
+      alert("registration failed. please try again later")
+    }
   }
 
   return (
@@ -23,7 +29,7 @@ export default function RegisterPage() {
         <form className="max-w-md mx-auto" onSubmit={registerUser}>
           <input
             type="text"
-            placeholder="yournamecd"
+            placeholder="yourname"
             value={name}
             onChange={(ev) => setName(ev.target.value)}
           />
@@ -39,7 +45,7 @@ export default function RegisterPage() {
             value={password}
             onChange={(ev) => setPassword(ev.target.value)}
           />
-          <button className="primary">Login</button>
+          <button className="primary">Register</button>
           <div className="text-center py-2 text-gray-500">
             Allready a remember?{" "}
             <Link className="underline text-black" to={"/login"}>
