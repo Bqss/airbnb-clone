@@ -51,7 +51,7 @@ app.post("/login", async (req, res) => {
       jwt.sign({ email: userDoc.email, id: userDoc._id }, jwtSecret);
       res.cookie("token", "").json("passOk");
     }
-    res.status(422).json("password not ok");
+    res.status(422).json("password not okk");
   }
   res.json("not found");
 });
