@@ -35,7 +35,7 @@ app.post("/register", async (req, res) => {
       email,
       password: bcrypt.hashSync(password, bcryptSalt),
     });
-    res.status(200).json(userDoc);
+    res.json(userDoc);
   } catch (e) {
     res.status(422).json(e);
   }
@@ -48,15 +48,8 @@ app.post("/login", async (req, res) => {
   if (userDoc) {
     const passOk = bcrypt.compareSync(password, userDoc.password);
     if (passOk) {
-      jwt.sign(
-        { email: userDoc.email, id: userDoc._id },
-        jwtSecret,
-        {},
-        (err, token) => {
-          if (err) throw err;
-          res.cookie("token", token).json("passOk");
-        }
-      );
+      jwt.sign({ email: userDoc.email, id: userDoc._id }, jwtSecret);
+      res.cookie("token", "").json("passOk");
     }
     res.status(422).json("password not ok");
   }
