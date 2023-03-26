@@ -18,6 +18,7 @@ export default function RegisterPage() {
 
       alert("registration Succesfull. now you can log in");
     } catch (e) {
+      
       alert("registration failed. please try again later")
     }
   }
