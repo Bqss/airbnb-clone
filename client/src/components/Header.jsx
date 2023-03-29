@@ -19,11 +19,11 @@ export default function Header() {
           <span className="font-bold text-xl">airbnb</span>
         </Link>
         <div className="flex border border-gray-300 px-4 py-2 rounded-full gap-2 shadow-md shadow-gray-300">
-          <div>Anywhere</div>
+          <div>Ke mana saja</div>
           <div className="border-l border-gray-300"></div>
-          <div>Any week</div>
+          <div>Minggu mana pun</div>
           <div className="border-l border-gray-300"></div>
-          <div>Add guest</div>
+          <div>Tambahkan tamu</div>
           <div className="border-l border-gray-300"></div>
           <button className="bg-primary text-white p-1 rounded-full">
             <svg
