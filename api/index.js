@@ -21,8 +21,6 @@ app.use(
 
 mongoose.connect(process.env.MONGO_URL);
 
-//
-
 app.get("/test", (req, res) => {
   res.json("test oke");
 });
@@ -35,7 +33,7 @@ app.post("/register", async (req, res) => {
       email,
       password: bcrypt.hashSync(password, bcryptSalt),
     });
-    res.json(userDoc);
+    res.status(201).json(userDoc);
   } catch (e) {
     res.status(422).json(e);
   }
@@ -49,7 +47,10 @@ app.post("/login", async (req, res) => {
     const passOk = bcrypt.compareSync(password, userDoc.password);
     if (passOk) {
       jwt.sign({ email: userDoc.email, id: userDoc._id }, jwtSecret);
-      res.cookie("token", "").json("passOk");
+      res.cookie("token", "",{
+        maxAge : 1000 * 60 * 2,
+        httpOnly : true
+      }).json("passOk");    
     }
     res.status(422).json("password not okk");
   }
