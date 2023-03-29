@@ -37,7 +37,7 @@ app.post("/register", async (req, res) => {
     });
     res.json(userDoc);
   } catch (e) {
-    res.status(422).json(e);
+    res.status(422).json("not okee");
   }
 });
 
@@ -48,12 +48,21 @@ app.post("/login", async (req, res) => {
   if (userDoc) {
     const passOk = bcrypt.compareSync(password, userDoc.password);
     if (passOk) {
-      jwt.sign({ email: userDoc.email, id: userDoc._id }, jwtSecret);
-      res.cookie("token", "").json("passOk");
+      jwt.sign(
+        { email: userDoc.email, id: userDoc._id },
+        jwtSecret,
+        {},
+        (err, token) => {
+          if (err) throw err;
+          res.cookie("token", token).json(userDoc);
+        }
+      );
+    } else {
+      res.status(422).json("password not ok");
     }
-    res.status(422).json("password not ok");
+  } else {
+    res.json("not found");
   }
-  res.json("not found");
 });
 
 app.listen(4000);
