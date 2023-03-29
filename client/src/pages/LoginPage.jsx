@@ -4,7 +4,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "../UserContext.jsx";
 
-export default function LoginPage() {
+export function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
@@ -56,3 +56,4 @@ export default function LoginPage() {
     </div>
   );
 }
+
