@@ -1,8 +1,9 @@
+import LoginRegisterModal from "../components/modal/LoginRegisterModal";
 
 export default function IndexPage() {
   return (
     <div>
-      <h1>Ini Index</h1>
+      <LoginRegisterModal/>
     </div>
   );
 }
