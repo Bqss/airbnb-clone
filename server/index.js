@@ -2,7 +2,7 @@ import express from "express";
 import cors  from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
-import authRoute from "./routes/Authroute";
+import authRoute from "./routes/Authroute.js";
 
 require("dotenv").config();
 const app = express();
