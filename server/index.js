@@ -1,17 +1,16 @@
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const cookiesParser = require("cookie-parser");
+import express from "express";
+import cors  from "cors";
+import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
+import authRoute from "./routes/Authroute";
 
 require("dotenv").config();
 const app = express();
 
-const bcryptSalt = bcrypt.genSaltSync(10);
-const jwtSecret = "ajdsadnawfnfskldjl";
+
 
 app.use(express.json());
-app.use(cookiesParser());
+app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
@@ -19,11 +18,11 @@ app.use(
   })
 );
 
-mongoose.connect(process.env.MONGO_URL);
 
-app.get("/test", (req, res) => {
-  res.json("test oke");
-});
+app.use("/api/auth",authRoute);
+
+
+
 
 
 
@@ -40,4 +39,10 @@ app.get("/test", (req, res) => {
 //   }
 // });
 
-app.listen(4000);
+
+mongoose.connect(process.env.MONGO_URL).then(() => {
+    app.listen(4000,() => {
+        console.log("listening on localhost:4000")
+    });
+});
+

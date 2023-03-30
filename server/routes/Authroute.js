@@ -3,8 +3,8 @@ import AuthController from "./../controller/AuthController"
 
 const authRoute = Router();
 
-authRoute.post("/register", AuthController);
-authRoute.post("/login", AuthController.register);
+authRoute.post("/register", AuthController.register);
+authRoute.post("/login", AuthController.login);
 authRoute.post("/logout", AuthController.logout);
 
 

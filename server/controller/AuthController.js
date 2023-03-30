@@ -1,10 +1,14 @@
 import UserModel from "./../models/UserModel";
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
 
+dotenv.config();
+const {env} = process; 
 
 class AuthController {
-  static async login(req, res) {
+  static async register(req, res) {
     const { name, email, password } = req.body;
+    const bcryptSalt = bcrypt.genSaltSync(10);
     try {
       const userDoc = await UserModel.create({
         name,
@@ -17,7 +21,7 @@ class AuthController {
     }
   }
 
-  static async register(req, res) {
+  static async login(req, res) {
     const { email, password } = req.body;
 
     const userDoc = await UserModel.findOne({ email });
@@ -26,18 +30,20 @@ class AuthController {
       if (passOk) {
         const token = jwt.sign(
           { email: userDoc.email, id: userDoc._id },
-          jwtSecret
+          env.jwtSecret
         );
         res
-          .cookie("ab_tkn", token, {
+          .cookie("ab_t", token, {
             maxAge: 1000 * 60 * 2,
             httpOnly: true,
           })
           .status(200)
           .json("berhasil login");
+      }else{
+        res.status(400).json("password salah")
       }
     } else {
-      res.status(404).json("not found");
+      res.status(404).json("user not found");
     }
   }
 

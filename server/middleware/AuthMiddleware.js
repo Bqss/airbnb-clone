@@ -1,8 +1,13 @@
-const authMiddleware = (req, res) => {
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+
+dotenv.config();
+const {env} = process.env;
+
+const authMiddleware = (req, res, next) => {
   const { ab_tkn } = req.cookies;
-  const { token } = req.cookies;
   if (token) {
-    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+    jwt.verify(ab_tkn, env.jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
       const { name, email, _id } = await User.findById(userData.id);
       res.json({ name, email, _id });
