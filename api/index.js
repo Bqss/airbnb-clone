@@ -1,10 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const { json } = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("./models/User.js");
 const cookiesParser = require("cookie-parser");
 
 require("dotenv").config();
@@ -24,6 +21,8 @@ app.use(
 
 mongoose.connect(process.env.MONGO_URL);
 
+//
+
 app.get("/test", (req, res) => {
   res.json("test oke");
 });
@@ -42,8 +41,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
 
   const userDoc = await User.findOne({ email });
   if (userDoc) {
