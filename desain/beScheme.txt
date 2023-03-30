@@ -1,0 +1,35 @@
+avenue : 
+1. kategori
+2. tipe tempat yang bisa digunakan
+3. alamat
+
+informasi dasar 
+
+4. tamu
+5. kamar
+6. tempat tidur 
+7. kamar mandi
+8. fasilitas
+7. foto
+8. judul
+9. deskripsi (tenang , bergaya , tengah kota )
+10. deskripsi teks
+11. harga 
+	
+user :
+1. username
+2. password
+3. email
+4. foto profil
+5. bio
+6. lokasi
+7. pekerjaan
+
+
+order :
+1. id_avenue 
+2. tanggal cekin 
+3. tanggal cekout
+4. jumlah tamu
+
+
