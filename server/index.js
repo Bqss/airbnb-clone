@@ -3,8 +3,9 @@ import cors  from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import authRoute from "./routes/Authroute.js";
+import dotenv  from "dotenv";
 
-require("dotenv").config();
+dotenv.config();
 const app = express();
 
 

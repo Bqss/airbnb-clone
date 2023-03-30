@@ -1,6 +1,7 @@
 import UserModel from "./../models/UserModel.js";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
+import  jwt  from "jsonwebtoken";
 
 dotenv.config();
 const {env} = process; 
@@ -30,7 +31,7 @@ class AuthController {
       if (passOk) {
         const token = jwt.sign(
           { email: userDoc.email, id: userDoc._id },
-          env.jwtSecret
+          env.JWT_SECRET
         );
         res
           .cookie("ab_t", token, {

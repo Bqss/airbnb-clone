@@ -14,7 +14,7 @@ function App() {
   
 
   return (
-    <UserContextProvider>
+    // <UserContextProvider>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<IndexPage />} />
@@ -22,7 +22,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
         </Route>
       </Routes>
-    </UserContextProvider>
+    // </UserContextProvider>
   );
 }
 

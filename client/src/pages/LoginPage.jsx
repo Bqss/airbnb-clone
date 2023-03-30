@@ -8,13 +8,13 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
-  const { setUser } = useContext(UserContext);
+  // const { setUser } = useContext(UserContext);
 
   async function handleLoginSubmit(ev) {
     ev.preventDefault();
     try {
-      const {data}  = await axios.post("/login", { email, password });
-      setUser(data);
+      const {data}  = await axios.post("/api/auth/login", { email, password });
+      // setUser(data);
       alert("login Succesfull");
       setRedirect(true);
     } catch (e) {
