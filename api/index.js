@@ -39,7 +39,7 @@ app.post("/register", async (req, res) => {
   } catch (e) {
     res.status(422).json("not okee");
   }
-});
+// });
 
 
   const userDoc = await User.findOne({ email });
