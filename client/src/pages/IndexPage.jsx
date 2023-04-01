@@ -1,9 +1,9 @@
-import LoginRegisterModal from "../components/modal/LoginRegisterModal";
+import RegisterModal from "../components/modals/RegisterModal";
 
 export default function IndexPage() {
   return (
     <div>
-      <LoginRegisterModal/>
+      <RegisterModal/>
     </div>
   );
 }

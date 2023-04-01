@@ -24,7 +24,7 @@
   input[type="text"],
   input[type="password"],
   input[type="email"] {
-    @apply w-full border outline-none rounded-lg inline-block text-base transition-colors duration-200;
+    @apply w-full outline-none rounded-md inline-block  transition-colors duration-200;
   }
 
   button {
