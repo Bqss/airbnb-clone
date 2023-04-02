@@ -4,7 +4,7 @@ const useClickOutside = ( callback) => {
   const componentRef = useRef()
   useEffect(() => {
     window.addEventListener("click", (ev) => {
-      if (!componentRef.current.contains(ev.target)) {
+      if (!componentRef.current?.contains(ev.target)) {
         callback();
       }
     });
