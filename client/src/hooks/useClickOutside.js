@@ -4,7 +4,7 @@ const useClickOutside = (callback) => {
   const componentRef = useRef();
   const listener = (ev) => {
     ev.stopPropagation();
-    if (!componentRef.current?.contains(ev.target)) {
+    if (componentRef.current && !componentRef.current.contains(ev.target)) {
       callback();
     }
   };
