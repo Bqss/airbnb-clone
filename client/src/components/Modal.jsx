@@ -46,7 +46,6 @@ const Modal = ({ children, className, isOpen, onClose, transition }) => {
 Modal.Body = ({ className, children }) => {
   const { onClose } = useContext(ModalContext);
   useEffect(() => {
-    console.log(document.body.scrollHeight);
     if(document.body.scrollHeight > window.innerHeight ){
       document.body.classList.add("mr-[17px]");
     }
