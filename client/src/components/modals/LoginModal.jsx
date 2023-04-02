@@ -3,8 +3,9 @@ import { HiXMark } from "react-icons/hi2";
 import Input from "../atoms/Input";
 import LineWiwhCenteredText from "../atoms/LineWithCenteredText";
 import { useForm } from "react-hook-form";
+import Modal from "../Modal";
 
-const LoginModal = () => {
+const LoginModal = ({isOpen, onClose}) => {
   const {
     register,
     handleSubmit,
@@ -21,25 +22,37 @@ const LoginModal = () => {
   const handleRegister = (ev) => {};
 
   return (
-    <>
-      <div className="absolute inset-0 backdrop-brightness-75 "></div>
-      <div className="absolute inset-0 flex justify-center items-center ">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      transition={{
+        enter: "transition-all duration-500",
+        enterFrom: "opacity-0 translate-y-full",
+        enterTo: "opacity-1 translate-y-0",
+        leave: "transition-all duration-500",
+        leaveFrom: "opacity-1 translate-y-0",
+        leaveTo: "opacity-0 translate-y-full",
+      }}
+    >
+      <Modal.Body>
         <div className="w-full bg-white rounded-xl pb-5  max-w-xl divide-gray-200/70">
           <div className="flex py-5 border-b px-6 ">
-            <button className="bg-white mr-auto bg-transparent">
+            <button
+              className="bg-white mr-auto bg-transparent"
+              onClick={onClose}
+            >
               <HiXMark className="w-5 h-5" />
             </button>
-            <span className="mr-auto font-bold text-lg">
-              Masuk 
-            </span>
+            <span className="mr-auto font-bold text-lg">Login</span>
           </div>
           <div className=" px-6">
-            <p className="text-2xl mt-10 ">Selamat datang di Airbnb</p>
+            <p className="text-xl font-medium mt-10 ">Selamat datang di Airbnb</p>
             <form
               action=""
               className="space-y-3 mt-6"
               onSubmit={handleSubmit(handleRegister)}
             >
+ 
               <div>
                 <Input
                   register={register}
@@ -94,15 +107,12 @@ const LoginModal = () => {
           <LineWiwhCenteredText>atau</LineWiwhCenteredText>
           <div className="flex flex-col gap-2 px-6">
             <button className="w-full py-3 px-6 rounded-lg border-2 border-black bg-white ">
-              Lanjutkan dengan Facebook
-            </button>
-            <button className="w-full py-3 px-6 rounded-lg border-2 border-black bg-white ">
               Lanjutkan dengan Google
             </button>
           </div>
         </div>
-      </div>
-    </>
+      </Modal.Body>
+    </Modal>
   );
 };
 
