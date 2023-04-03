@@ -2,9 +2,9 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const ModalSlice = createSlice({
     initialState : {
-        openRegisterModal : true,
+        openRegisterModal : false,
         openLoginModal : false,
-        openAddAirbnbModal : false,
+        openAddAirBnbModal : false,
     },
     name : "modals",
     reducers : {
@@ -16,6 +16,9 @@ const ModalSlice = createSlice({
         },
         toggleOpenAddAirbnbModal : (state) => {
             state.openAddAirbnbModal =! state.openAddAirbnbModal
+        },
+        toggleOpenAddAirbnbModal : (state) => {
+            state.openAddAirBnbModal =! state.openAddAirBnbModal
         },
     }
 })

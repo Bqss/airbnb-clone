@@ -1,7 +1,6 @@
 import React, {
   Fragment,
   createContext,
-  useCallback,
   useContext,
   useEffect,
 } from "react";
@@ -26,7 +25,7 @@ const Modal = ({ children, className, isOpen, onClose, transition }) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 backdrop-brightness-75 z-200"></div>
+          <div className="fixed inset-0 backdrop-brightness-[.6] z-200"></div>
         </Transition.Child>
         <Transition.Child {...transition} as={Fragment}>
           <div
