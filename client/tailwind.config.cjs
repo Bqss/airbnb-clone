@@ -10,7 +10,7 @@ module.exports = {
         primary: '#F5385D'
       },
       fontFamily : {
-        "Circular" : ["Circular","serif"]
+        "Circular": ["Circular","sans-serif"]
       }
     },
   },

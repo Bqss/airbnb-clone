@@ -1,9 +1,11 @@
-import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "./../UserContext";
+import {toggleOpenLoginModal,  toggleOpenRegisterModal} from "../fitures/modalSlice"
+import Dropdown from "./Dropdown";
+import { useDispatch } from "react-redux";
 
 export default function Header() {
-  const { user } = useContext(UserContext);
+  // const { user } = useContext(UserContext);
+  const dispatch = useDispatch();
   return (
     <div>
       <header className="w-full py-4 gap-28 flex justify-evenly items-center border-y-[1px] border-slate-200 -mt-4 fixed bg-white">
@@ -23,7 +25,9 @@ export default function Header() {
           <div>Ke mana saja</div>
           <div className="border-l border-gray-300"></div>
           <div>Minggu mana pun</div>
+          <div>Minggu mana pun</div>
           <div className="border-l border-gray-300"></div>
+          <div>Tambahkan tamu</div>
           <div>Tambahkan tamu</div>
           <div className="border-l border-gray-300"></div>
           <button className="bg-primary text-white p-1 rounded-full">
