@@ -1,8 +1,9 @@
+import Content from "../components/content";
 
 export default function IndexPage() {
   return (
     <div>
-      <h1>Ini Index</h1>
+      <Content/>
     </div>
   );
 }

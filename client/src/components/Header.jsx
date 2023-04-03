@@ -6,8 +6,8 @@ export default function Header() {
   const { user } = useContext(UserContext);
   return (
     <div>
-      <header className="p-4 flex justify-between">
-        <Link to={'/'} className="flex items-center gap-2">
+      <header className="w-full py-4 gap-28 flex justify-evenly items-center border-y-[1px] border-slate-200 -mt-4 fixed bg-white">
+        <Link to={"/"} className="flex items-center gap-2 -ml-48">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -18,12 +18,13 @@ export default function Header() {
           </svg>
           <span className="font-bold text-xl">airbnb</span>
         </Link>
-        <div className="flex border border-gray-300 px-4 py-2 rounded-full gap-2 shadow-md shadow-gray-300">
-          <div>Anywhere</div>
+
+        <div className="flex border border-gray-300 px-4 py-2 rounded-full gap-2 shadow-md shadow-gray-300 -mr-56">
+          <div>Ke mana saja</div>
           <div className="border-l border-gray-300"></div>
-          <div>Any week</div>
+          <div>Minggu mana pun</div>
           <div className="border-l border-gray-300"></div>
-          <div>Add guest</div>
+          <div>Tambahkan tamu</div>
           <div className="border-l border-gray-300"></div>
           <button className="bg-primary text-white p-1 rounded-full">
             <svg
@@ -40,9 +41,27 @@ export default function Header() {
             </svg>
           </button>
         </div>
+
+        <div className="flex gap-3 -mr-72">
+          <p>Jadikan rumah Anda airbnb</p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"
+            />
+          </svg>
+        </div>
         <Link
           to={user ? "/account" : "/login"}
-          className="flex items-center gap-2 border border-gray-300 rounded-full py-2 px-4 "
+          className="flex items-center gap-2 border border-gray-300 rounded-full py-2 px-4 -mr-48"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
