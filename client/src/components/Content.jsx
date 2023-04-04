@@ -165,7 +165,7 @@ function CardLoop() {
         </div>
       </section>
 
-      <section className="flex justify-around flex-wrap mt-10 bg-black">
+      <section className="flex justify-around flex-wrap mt-10 ">
         {/* call function CardLoop */}
         {CardLoop()}
       </section>
