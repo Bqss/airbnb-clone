@@ -27,14 +27,15 @@
     @apply w-full outline-none rounded-md inline-block  transition-colors duration-200;
   }
 
+  
+
+}
+
+@layer components{
   button{
-    @apply transition-colors duration-150;
+    @apply transition-colors hover:bg-gray-100 duration-150;
   }
 
-  button.primary {
-    background-color: #f5385d;
-    @apply bg-primary p-2 w-full text-white rounded-2xl;
-  }
 }
 
 

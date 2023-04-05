@@ -6,9 +6,7 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        primary: '#F5385D'
-      },
+    
       fontFamily : {
         "Circular": ["Circular","sans-serif"]
       }

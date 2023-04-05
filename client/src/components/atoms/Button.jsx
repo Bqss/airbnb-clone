@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Button = ({className, children, isLoading = false, disabledWhenLoading = false }) => {
+const Button = ({className, disabled, children, isLoading = false,onClick,  disabledWhenLoading = false ,...d}) => {
   return (
-    <button className={['rounded-md px-4 py-2 hover:bg-gray-100',className].join(" ")} disabled={disabledWhenLoading && isLoading} >
+    <button className={[' px-4 py-2   disabled:cursor-not-allowed ',className].join(" ")} disabled={disabledWhenLoading && isLoading || disabled} onClick={onClick} {...d}>
       {children}
     </button>
   )

@@ -6,7 +6,8 @@ import {
   toggleOpenRegisterModal,
   toggleOpenAddAirbnbModal,
 } from "../fitures/modalSlice";
-import CreateBnb from "../components/modals/CreateNewBnb";
+import Content from "../components/Content";
+import CreateNewBnbModal from "../components/modals/CreateNewBnbModal"; 
 
 export default function IndexPage() {
   const { openLoginModal, openRegisterModal, openAddAirBnbModal } = useSelector(
@@ -17,19 +18,10 @@ export default function IndexPage() {
 
   return (
     <>
-      <RegisterModal
-        isOpen={openRegisterModal}
-        onClose={() => dispatch(toggleOpenRegisterModal())}
-      />
-      <LoginModal
-        isOpen={openLoginModal}
-        onClose={() => dispatch(toggleOpenLoginModal())}
-      />
-      <CreateBnb
-        isOpen={openAddAirBnbModal}
-        onClose={() => dispatch(toggleOpenAddAirbnbModal(false))}
-      ></CreateBnb>
-      <div className=""></div>
+      <LoginModal isOpen={openLoginModal} onClose={() => dispatch(toggleOpenLoginModal())}/>
+      <RegisterModal isOpen={openRegisterModal} onClose={() => dispatch(toggleOpenRegisterModal())}/>
+      <CreateNewBnbModal isOpen={openAddAirBnbModal} onClose={() => dispatch(toggleOpenAddAirbnbModal())}/>
+      <Content/>
     </>
   );
 }
