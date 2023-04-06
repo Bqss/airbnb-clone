@@ -33,7 +33,7 @@ Tabs.Tab = () => {};
 Tabs.Panels = ({ children, className }) => {
 
   return (
-    <div className={["translate duration", className].join(" ")}>
+    <div className={["translate duration ", className].join(" ")}>
       {children}
     </div>
   );
@@ -46,13 +46,14 @@ Tabs.Panel = ({ children, className, value}) => {
   },[activeTab])
   return (
     <Transition
+
       show={activeTab === value}
-      enter ="duration-1000 absolute delay-1000 transition-all"
-      enterFrom ="opacity-0  "
+      enter ="duration-500 delay-500  transition-all "
+      enterFrom ="opacity-0 invisible"
       enterTo ="opacity-1 "
-      leave ="duration-1000 "
+      leave ="duration-500 transition-all asbolute inset-x-0"
       leaveFrom ="opacity-100 "
-      leaveTo = "opacity-0 absolute"
+      leaveTo = "opacity-0 "
       className={"h-full px-7 py-5 "+className}
     >
       {children}
