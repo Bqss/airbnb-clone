@@ -92,9 +92,9 @@ function Content() {
 
 // start card loop =====
 function CardLoop() {
-    return datanew.map((data) => {
+    return datanew.map((data, i) => {
       return (
-          <div className="w-[300px] h-[400px] text-sm">
+          <div className="w-[300px] h-[400px] text-sm" key={i}>
             <img src={data.image} alt="" className="h-[280px] rounded-xl" />
             <br />
             <nav className="flex items-center justify-between">

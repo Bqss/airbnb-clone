@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Modal from "../Modal";
 import { HiXMark, HiOutlineHome } from "react-icons/hi2";
 
@@ -22,6 +22,22 @@ const STEPS = {
 
 const CreateNewBnbModal = ({ isOpen, onClose }) => {
   const [currentStep, setCurrentStep] = useState(STEPS.CATEGORY);
+  const [category, setCategory] = useState("");
+  const [tipeRumah, setTipeRumah] = useState("");
+  const [lokasi, setLokasi] = useState("");
+  const [infoDasar, setInfoDasar] = useState({
+    tamu: 1,
+    kamar: 1,
+    tempatTidur: 1,
+    kamarMandi: 1,
+  });
+
+
+
+
+
+
+
   return (
     <Modal
       isOpen={isOpen}
@@ -49,7 +65,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
         <div className="flex-1 flex flex-col overflow-y-auto">
           <Tabs activeTab={currentStep} className="h-full ">
             <Tabs.Panels className="h-full">
-              <Tabs.Panel value={0} className="py-10 px-12 ">
+              <Tabs.Panel value={0}>
                 <div className="w-full max-w-2xl mx-auto flex flex-col justify-center">
                   <h2 className="text-2xl font-medium mt-5">
                     Opsi mana yang terbaik untuk mendeskripsikan tempat anda?{" "}
@@ -58,11 +74,14 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                     Pilih kategori
                   </span>
                   <div className="grid grid-cols-3 gap-3 mt-8 ">
-                    {desc.map((des) => (
+                    {desc.map((des, i) => (
                       <RadioButton
                         value={des.value}
                         className="space-y-2"
                         name="category"
+                        key={i}
+                        selected={category === des.value}
+                        setSelected={setCategory}
                       >
                         <des.icon className="w-8 h-8" />
                         <span className="block text-sm">{des.label}</span>
@@ -82,6 +101,8 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                       value={"seluruhrumah"}
                       className="p-5 flex rounded-xl justify-between items-center"
                       name="tipe"
+                      selected={tipeRumah == 'seluruhrumah'}
+                      setSelected={setTipeRumah}
                     >
                       <div className="space-y-1">
                         <h3 className="font-medium text-xl">Seluruh rumah</h3>
@@ -95,6 +116,8 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                       value={"kamarpribadi"}
                       className="p-6 flex justify-between items-center"
                       name="tipe"
+                      selected={tipeRumah == 'kamarpribadi'}
+                      setSelected={setTipeRumah}
                     >
                       <div className="space-y-1">
                         <h3 className="font-medium text-xl">Kamar pribadi</h3>
@@ -108,6 +131,8 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                       value={"kamarbersama"}
                       className="p-6 flex justify-between items-center"
                       name="tipe"
+                      selected={tipeRumah == 'kamarbersama'}
+                      setSelected={setTipeRumah}
                     >
                       <div className="space-y-1">
                         <h3 className="font-medium text-xl">Kamar bersama</h3>
@@ -136,19 +161,19 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                   <div className="mt-7 divide-y-2 divide-gray-200/60">
                     <div className="flex items-center justify-between py-6">
                       <span className="text-gray-600">Tamu</span>
-                      <Stepper/>
+                      <Stepper setValue={setInfoDasar} value={infoDasar.tamu} name={"tamu"} />
                     </div>
                     <div className="flex items-center justify-between py-4">
                       <span className="text-gray-600">Kamar</span>
-                      <Stepper/>
+                      <Stepper setValue={setInfoDasar} value={infoDasar.kamar} name={"kamar"}/>
                     </div>
                     <div className="flex items-center justify-between py-4">
                       <span className="text-gray-600">Tempat tidur</span>
-                      <Stepper/>
+                      <Stepper setValue={setInfoDasar} value={infoDasar.tempatTidur} name={"tempatTidur"}/>
                     </div>
                     <div className="flex items-center justify-between py-4">
                       <span className="text-gray-600">Kamar Mandi</span>
-                      <Stepper/>
+                      <Stepper setValue={setInfoDasar} value={infoDasar.kamarMandi} name={"kamarMandi"}/>
                     </div>
                   </div>
                 </div>
@@ -187,5 +212,8 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
     </Modal>
   );
 };
+
+
+
 
 export default CreateNewBnbModal;

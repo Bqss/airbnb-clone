@@ -11,7 +11,6 @@ const TabsContext = createContext({
 });
 
 const Tabs = ({ className, children, activeTab }) => {
-  console.log(activeTab);
 
   return (
     <TabsContext.Provider value={{activeTab}}>
@@ -41,9 +40,7 @@ Tabs.Panels = ({ children, className }) => {
 
 Tabs.Panel = ({ children, className, value}) => {
   const {activeTab} = useContext(TabsContext);
-  useEffect(() => {
-    console.log("inndex :" + activeTab);
-  },[activeTab])
+
   return (
     <Transition
 
