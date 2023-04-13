@@ -1,6 +1,7 @@
 import React, {
   Fragment,
   createContext,
+  memo,
   useContext,
   useEffect,
 } from "react";
@@ -29,14 +30,14 @@ Tabs.TabList = ({className, children}) => {
 
 Tabs.Tab = () => {};
 
-Tabs.Panels = ({ children, className }) => {
+Tabs.Panels = memo(({ children, className }) => {
 
   return (
     <div className={["relative  ", className].join(" ")}>
       {children}
     </div>
   );
-};
+});
 
 Tabs.Panel = ({ children, className, value}) => {
   const {activeTab} = useContext(TabsContext);
@@ -45,13 +46,13 @@ Tabs.Panel = ({ children, className, value}) => {
     <Transition
 
       show={activeTab === value}
-      enter ="duration-1000 delay-1000  transition-all absolute top-0 inset-x-0 "
-      enterFrom ="opacity-0 invisible "
-      enterTo ="opacity-1 visible static "
-      as={Fragment}
+      enter ="delay-1000 duration-1000 transition-all absolute top-0 inset-x-0 "
+      enterFrom ="opacity-0 invisible"
+      enterTo ="opacity-1 static visible"
       leave ="duration-1000 transition-all top-0 asbolute inset-x-0"
-      leaveFrom ="opacity-100 invisible top-0 asbolute inset-x-0 "
-      leaveTo = "opacity-0 visible "
+      leaveFrom ="opacity-100 top-0 inset-x-0 visible "
+      leaveTo = "opacity-0 invisible"
+      as={Fragment}
       className={"h-full px-7 py-5 "+className}
     >
       {children}

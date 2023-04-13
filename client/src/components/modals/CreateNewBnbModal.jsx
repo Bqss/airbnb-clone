@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import Modal from "../Modal";
 import { HiXMark, HiOutlineHome } from "react-icons/hi2";
 
@@ -30,8 +30,12 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
   const [currentStep, setCurrentStep] = useState(STEPS.CATEGORY);
   const [category, setCategory] = useState("");
   const [tipeRumah, setTipeRumah] = useState("");
-  const [isValid, setIsValid] = useState(true);
+  const [isValid, setIsValid] = useState(false);
+  const [images, setImages] = useState([]);
   const [lokasi, setLokasi] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState("");
   const [infoDasar, setInfoDasar] = useState({
     tamu: 1,
     kamar: 1,
@@ -39,10 +43,55 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
     kamarMandi: 1,
   });
 
-  const [price, setPrice] = useState("");
+  useEffect(() => {
+    switch (currentStep) {
+      case STEPS.CATEGORY:
+        setTimeout(() => {
+          setIsValid(() => category == "");
+        }, 0);
 
-  const [description, setDescription] = useState("");
-  const [title, setTitle] = useState("");
+        break;
+      case STEPS.Tipe:
+        setTimeout(() => {
+          setIsValid(() => tipeRumah == "");
+        }, 0);
+        break;
+      case STEPS.LOCATION:
+        setTimeout(() => {
+          setIsValid(() => lokasi == "");
+        }, 0);
+        break;
+      case STEPS.IMAGES:
+        setTimeout(() => {
+          setIsValid(() => images.length < 5);
+        }, 0);
+        break;
+      case STEPS.JUDUL:
+        setTimeout(() => {
+          setIsValid(() => title == "");
+        }, 0);
+        break;
+      case STEPS.DESCRIPTION:
+        setTimeout(() => {
+          setIsValid(() => description == "");
+        }, 0);
+        break;
+      case STEPS.PRICE:
+        setTimeout(() => {
+          setIsValid(() => price == "");
+        }, 0);
+        break;
+    }
+  }, [
+    category,
+    tipeRumah,
+    location,
+    images,
+    title,
+    description,
+    price,
+    currentStep,
+  ]);
 
   const next = () => {
     setCurrentStep((e) => e + 1);
@@ -50,20 +99,24 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
   const prev = () => {
     setCurrentStep((e) => e - 1);
   };
-  const onPriceChange = ({target}) => {
+  const onPriceChange = ({ target }) => {
     const value = target.value;
     const crr = target.value.slice(3);
-    console.log(crr);
     setPrice((e) => {
-      if((value.length??0) < (e.length??0)){
-         if(crr)return value
-         return ""
+      if ((value.length ?? 0) < (e.length ?? 0)) {
+        if (crr) return value;
+        return "";
       }
-      if(crr)return `Rp.${crr}`
-      return `Rp.${value}`
-    })
-   
-  }
+      if (crr) return `Rp.${crr}`;
+      return `Rp.${value}`;
+    });
+  };
+
+  const onSubmit = () => {
+    switch (currentStep) {
+      case STEPS.CATEGORY:
+    }
+  };
 
   return (
     <Modal
@@ -92,7 +145,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
         <div className="flex-1 flex flex-col overflow-y-auto">
           <Tabs activeTab={currentStep} className="h-full ">
             <Tabs.Panels className="h-full">
-              <Tabs.Panel value={STEPS.CATEGORY}>
+              <Tabs.Panel value={STEPS.CATEGORY} key={STEPS.CATEGORY}>
                 <div className="w-full max-w-2xl mx-auto flex flex-col justify-center">
                   <h2 className="text-3xl font-medium mt-5">
                     Opsi mana yang terbaik untuk mendeskripsikan tempat anda?{" "}
@@ -117,7 +170,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                   </div>
                 </div>
               </Tabs.Panel>
-              <Tabs.Panel value={STEPS.Tipe}>
+              <Tabs.Panel value={STEPS.Tipe} key={STEPS.Tipe}>
                 <div className="w-full h-full max-w-2xl mx-auto flex flex-col justify-center">
                   <h2 className="text-3xl font-medium mt-5">
                     Apa tipe tempat yang bisa digunakan tamu ?
@@ -177,7 +230,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                   </div>
                 </div>
               </Tabs.Panel>
-              <Tabs.Panel value={STEPS.LOCATION}>
+              <Tabs.Panel value={STEPS.LOCATION} key={STEPS.LOCATION}>
                 <div className="w-full h-full max-w-2xl mx-auto flex flex-col justify-center">
                   <h2 className="text-3xl font-medium">
                     Di mana lokasi tempat Anda ?
@@ -189,7 +242,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                   <div className="w-full aspect-square  bg-gray-100 mt-4 rounded-lg"></div>
                 </div>
               </Tabs.Panel>
-              <Tabs.Panel value={STEPS.INFO}>
+              <Tabs.Panel value={STEPS.INFO} key={STEPS.INFO}>
                 <div className="w-full h-full max-w-2xl mx-auto flex flex-col justify-center">
                   <h2 className="text-3xl font-medium ">
                     Sampaikan informasi dasar mengenai tempat Anda
@@ -234,7 +287,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                   </div>
                 </div>
               </Tabs.Panel>
-              <Tabs.Panel value={STEPS.FASILITAS}>
+              <Tabs.Panel value={STEPS.FASILITAS} key={STEPS.FASILITAS}>
                 <div className="w-full h-full max-w-2xl mx-auto flex flex-col justify-center">
                   <h2 className="text-3xl font-medium ">
                     Beri tahu tamu apa saja yang ditawarkan di tempat anda
@@ -244,7 +297,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                     dipublikasikan.
                   </p>
                   <div className="grid mt-8 grid-cols-3 gap-3">
-                    {fasility.map((e,i) => (
+                    {fasility.map((e, i) => (
                       <CheckBox value={e.value} key={i} name={e.label}>
                         <e.icon className="w-8 h-8 flex flex-shrink-0" />
                         <h3 className="mt-3">{e.label}</h3>
@@ -253,7 +306,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                   </div>
                 </div>
               </Tabs.Panel>
-              <Tabs.Panel value={STEPS.IMAGES}>
+              <Tabs.Panel value={STEPS.IMAGES} key={STEPS.IMAGES}>
                 <div className="w-full h-full max-w-2xl mx-auto flex flex-col justify-center">
                   <h2 className="text-3xl font-medium ">
                     Tambahkan beberapa foto kabin anda
@@ -267,7 +320,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                   </div>
                 </div>
               </Tabs.Panel>
-              <Tabs.Panel value={STEPS.JUDUL}>
+              <Tabs.Panel value={STEPS.JUDUL} key={STEPS.JUDUL}>
                 <div className="w-full h-full max-w-2xl mx-auto flex flex-col justify-center">
                   <h2 className="text-3xl font-medium ">
                     Sekarang, mari beri judul untuk kabin anda
@@ -286,7 +339,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                   </div>
                 </div>
               </Tabs.Panel>
-              <Tabs.Panel value={STEPS.DESCRIPTION}>
+              <Tabs.Panel value={STEPS.DESCRIPTION} key={STEPS.DESCRIPTION}>
                 <div className="w-full h-full max-w-2xl mx-auto flex flex-col justify-center">
                   <h2 className="text-3xl font-medium ">
                     Tuliskan deskripsi tempat Anda
@@ -304,7 +357,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                   </div>
                 </div>
               </Tabs.Panel>
-              <Tabs.Panel value={STEPS.PRICE}>
+              <Tabs.Panel value={STEPS.PRICE} key={STEPS.PRICE}>
                 <div className="w-full h-full max-w-2xl mx-auto flex flex-col justify-center">
                   <h2 className="text-3xl font-medium ">
                     Sekarang tetapkan harga Anda
@@ -336,36 +389,49 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
               </Tabs.Panel>
             </Tabs.Panels>
           </Tabs>
-        </div>
-        <div className="mt-auto flex-shrink-0">
-          <div className="w-full bg-gray-200 h-[.35rem] overflow-hidden">
-            <div
-              className="h-full bg-black transition-all delay-300 duration-700 "
-              style={{
-                width: `${(currentStep / STEPS.PRICE) * 100}%`,
-              }}
-            ></div>
-          </div>
-          <div className="w-full px-5 py-3 flex justify-between">
-            <Button
-              disabled={currentStep == 0}
-              className="underline disabled:text-gray-300"
-              onClick={prev}
-            >
-              Kembali
-            </Button>
-
-            <Button
-              className="bg-slate-800 ml-auto hover:bg-black  rounded-lg px-8 py-3 text-white"
-              onClick={next}
-            >
-              Berikutnya
-            </Button>
-          </div>
+          <Footer
+            proggress={currentStep / STEPS.PRICE}
+            isValid={isValid}
+            prev={prev}
+            next={next}
+          />
         </div>
       </Modal.Body>
     </Modal>
   );
 };
+
+const Category = () => {};
+const Footer = memo(({ proggress, isValid, prev, next }) => {
+  return (
+    <div className="mt-auto flex-shrink-0">
+      <div className="w-full bg-gray-200 h-[.35rem] overflow-hidden">
+        <div
+          className="h-full bg-black transition-all delay-300 duration-700 "
+          style={{
+            width: `${proggress * 100}%`,
+          }}
+        ></div>
+      </div>
+      <div className="w-full px-5 py-3 flex justify-between">
+        <Button
+          disabled={proggress == 0}
+          className="underline disabled:text-gray-300"
+          onClick={prev}
+        >
+          Kembali
+        </Button>
+
+        <Button
+          className="bg-slate-800 ml-auto hover:bg-black  rounded-lg px-8 py-3 text-white disabled:bg-gray-500"
+          onClick={next}
+          disabled={isValid}
+        >
+          Berikutnya
+        </Button>
+      </div>
+    </div>
+  );
+});
 
 export default CreateNewBnbModal;

@@ -102,7 +102,7 @@ const desc = [
     {
         id: "14",
         label : "Aksebilitas",
-        value : "arktika",
+        value : "aksebilitas",
         icon : BiAccessibility
     }
 ]
