@@ -12,7 +12,7 @@ export default function Header() {
   const dispatch = useDispatch();
 
   return (
-    <header className="p-4 w-auto bg-white flex items-center justify-between -mt-4 gap-[170px] fixed border-b-[1px] border-slate-200">
+    <header className="p-4 w-auto bg-white flex z-10 items-center justify-between -mt-4 gap-[170px] fixed border-b-[1px] border-slate-200">
       <Link to={"/"} className="flex items-center gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -108,7 +108,7 @@ export default function Header() {
           {/* {!!user && <div>{user.name}</div>} */}
           <Dropdown.Body
             className={
-              "p-1 bg-white flex flex-col border-2 border-gray-200  rounded-lg overflow-hidden shadow-md w-[40vw] max-w-[13rem]"
+              "p-1 bg-white flex flex-col border-2 border-gray-200  rounded-lg  shadow-md w-[40vw] max-w-[13rem]"
             }
           >
             <Dropdown.Item onClick={() => dispatch(toggleOpenLoginModal())}>

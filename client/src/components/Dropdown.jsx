@@ -11,7 +11,7 @@ const Dropdown = ({className, children}) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <DropdownContext.Provider value={{isOpen, setIsOpen}}>
-      <div className={['relative',className].join(" ")}>
+      <div className={['relative z-[100]',className].join(" ")}>
         {children}
       </div>
     </DropdownContext.Provider>
@@ -39,7 +39,7 @@ Dropdown.Body = ({children, className}) => {
       leaveFrom="opacity-100 scale-100"
       leaveTo="opacity-0 scale-75"
     >
-      <div className={['absolute right-0 top-12 origin-top-right',className].join(" ")} ref={ddRef}>
+      <div className={['absolute z-[9999] right-0 top-12 origin-top-right',className].join(" ")} ref={ddRef}>
         {children}
       </div>
     </Transition>
@@ -49,7 +49,7 @@ Dropdown.Body = ({children, className}) => {
 Dropdown.Item = ({className, children, onClick , ...d}) => {
   const {setIsOpen} = useContext(DropdownContext);
   return (
-    <button  className={'w-full text-sm bg-white px-4 py-3 text-left hover:bg-gray-100 '+className} onClick={() => {
+    <button  className={'w-full text-sm text-black bg-white px-4 py-3 text-left hover:bg-gray-100 '+className} onClick={() => {
       onClick();
       setIsOpen(false)
     }} {...d}>
