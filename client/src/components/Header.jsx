@@ -12,7 +12,7 @@ export default function Header() {
   const dispatch = useDispatch();
 
   return (
-    <header className="p-4 w-auto bg-white flex items-center justify-between -mt-4 gap-[180px] fixed border-b-[1px] border-slate-200">
+    <header className="p-4 w-auto bg-white flex items-center justify-between -mt-4 gap-[170px] fixed border-b-[1px] border-slate-200">
       <Link to={"/"} className="flex items-center gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
