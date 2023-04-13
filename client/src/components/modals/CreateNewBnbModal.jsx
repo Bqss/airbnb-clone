@@ -4,7 +4,6 @@ import { HiXMark, HiOutlineHome } from "react-icons/hi2";
 
 import Tabs from "../Tabs";
 import Button from "../atoms/Button";
-
 import RadioButton from "../atoms/RadioButton";
 import { desc, fasility } from "../../data";
 import { GrRestroomMen } from "react-icons/gr";
@@ -13,6 +12,7 @@ import Stepper from "../atoms/Stepper";
 import CheckBox from "../atoms/CheckBox";
 import FileInput from "../atoms/FileInput";
 import TextArea from "../atoms/TextArea";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
 const STEPS = {
   CATEGORY: 0,
@@ -27,7 +27,7 @@ const STEPS = {
 };
 
 const CreateNewBnbModal = ({ isOpen, onClose }) => {
-  const [currentStep, setCurrentStep] = useState(STEPS.JUDUL);
+  const [currentStep, setCurrentStep] = useState(STEPS.CATEGORY);
   const [category, setCategory] = useState("");
   const [tipeRumah, setTipeRumah] = useState("");
   const [isValid, setIsValid] = useState(true);
@@ -39,16 +39,31 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
     kamarMandi: 1,
   });
 
+  const [price, setPrice] = useState("");
+
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
 
   const next = () => {
     setCurrentStep((e) => e + 1);
   };
-
   const prev = () => {
     setCurrentStep((e) => e - 1);
   };
+  const onPriceChange = ({target}) => {
+    const value = target.value;
+    const crr = target.value.slice(3);
+    console.log(crr);
+    setPrice((e) => {
+      if((value.length??0) < (e.length??0)){
+         if(crr)return value
+         return ""
+      }
+      if(crr)return `Rp.${crr}`
+      return `Rp.${value}`
+    })
+   
+  }
 
   return (
     <Modal
@@ -229,8 +244,8 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                     dipublikasikan.
                   </p>
                   <div className="grid mt-8 grid-cols-3 gap-3">
-                    {fasility.map((e) => (
-                      <CheckBox value={e.value} name={e.label}>
+                    {fasility.map((e,i) => (
+                      <CheckBox value={e.value} key={i} name={e.label}>
                         <e.icon className="w-8 h-8 flex flex-shrink-0" />
                         <h3 className="mt-3">{e.label}</h3>
                       </CheckBox>
@@ -298,7 +313,25 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                     Tetapkan harga anda untuk tempat anda, anda dapat
                     mengubahnya kapan saja.
                   </p>
-                  <div className="mt-8 "></div>
+                  <div className="mt-8 ">
+                    <div className="p-8 rounded-xl flex items-center gap-3 bg-gray-100">
+                      <button className="p-4 rounded-full  bg-white border border-gray-300 hover:border-black">
+                        <AiOutlinePlus className="w-4 h-4" />
+                      </button>
+                      <input
+                        type="text"
+                        name="price"
+                        className="text-4xl py-4 text-center font-medium "
+                        placeholder="Rp.00"
+                        onChange={onPriceChange}
+                        pattern={"[1-9]"}
+                        value={price}
+                      />
+                      <button className="p-4 rounded-full  bg-white border border-gray-300 hover:border-black">
+                        <AiOutlineMinus className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </Tabs.Panel>
             </Tabs.Panels>

@@ -4,7 +4,7 @@ const ModalSlice = createSlice({
     initialState : {
         openRegisterModal : false,
         openLoginModal : false,
-        openAddAirBnbModal : true,
+        openAddAirBnbModal : false,
     },
     name : "modals",
     reducers : {
