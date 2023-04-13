@@ -130,8 +130,8 @@ function CardLoop() {
 
   return (
     <div>
-      <section className="w-full h-[85px] flex justify-center items-center gap-3 text-xs">
-        <div className="w-[85%] flex gap-5">
+      <section className="w-full h-[100px] pb-3  flex justify-center items-center gap-3 text-xs sticky top-[79px]  bg-white border-b-[1px] border-slate-200">
+        <div className="w-[85%] flex">
           <Card name="Pantai" img={img1} />
           <Card name="Kolam renang keren" img={img2} />
           <Card name="Pemandangan cantik" img={img3} />
