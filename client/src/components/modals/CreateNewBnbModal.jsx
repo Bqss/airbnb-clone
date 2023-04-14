@@ -96,9 +96,11 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
   const next = () => {
     setCurrentStep((e) => e + 1);
   };
+   
   const prev = () => {
     setCurrentStep((e) => e - 1);
   };
+
   const onPriceChange = ({ target }) => {
     const value = target.value;
     const crr = target.value.slice(3);
@@ -401,7 +403,6 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
   );
 };
 
-const Category = () => {};
 const Footer = memo(({ proggress, isValid, prev, next }) => {
   return (
     <div className="mt-auto flex-shrink-0">
