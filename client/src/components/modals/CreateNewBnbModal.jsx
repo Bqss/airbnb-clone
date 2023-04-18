@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from "react";
+import React, { Fragment, memo, useEffect, useMemo, useState } from "react";
 import Modal from "../Modal";
 import { HiXMark, HiOutlineHome } from "react-icons/hi2";
 
@@ -13,6 +13,9 @@ import CheckBox from "../atoms/CheckBox";
 import FileInput from "../atoms/FileInput";
 import TextArea from "../atoms/TextArea";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import SelectLocation from "../atoms/SelectLocation";
+import Map from "../atoms/Map";
+import GetLocation from "../molecules/GetLocation";
 
 const STEPS = {
   CATEGORY: 0,
@@ -32,10 +35,11 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
   const [tipeRumah, setTipeRumah] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [images, setImages] = useState([]);
-  const [lokasi, setLokasi] = useState("");
+  const [lokasi, setLokasi] = useState({});
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
+  const [query, setQuery] = useState("");
   const [infoDasar, setInfoDasar] = useState({
     tamu: 1,
     kamar: 1,
@@ -58,7 +62,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
         break;
       case STEPS.LOCATION:
         setTimeout(() => {
-          setIsValid(() => lokasi == "");
+          setIsValid(() => !lokasi.name);
         }, 0);
         break;
       case STEPS.IMAGES:
@@ -85,7 +89,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
   }, [
     category,
     tipeRumah,
-    location,
+    lokasi,
     images,
     title,
     description,
@@ -93,10 +97,15 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
     currentStep,
   ]);
 
+
+  useEffect(() => {
+    console.log(lokasi);
+  },[lokasi])
+
   const next = () => {
     setCurrentStep((e) => e + 1);
   };
-   
+
   const prev = () => {
     setCurrentStep((e) => e - 1);
   };
@@ -125,17 +134,17 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
       isOpen={isOpen}
       onClose={onClose}
       transition={{
-        enter: "transition-all duration-500",
+        enter: "transition-all  duration-500",
         enterFrom: "opacity-0 translate-y-full",
-        enterTo: "opacity-1 translate-y-0",
-        leave: "transition-all duration-500",
-        leaveFrom: "opacity-1 translate-y-0",
+        enterTo: "opacity-100 translate-y-0",
+        leave: "transition-all  duration-500",
+        leaveFrom: "opacity-100 translate-y-0",
         leaveTo: "opacity-0 translate-y-full",
       }}
     >
       <Modal.Body
         className={
-          "w-full bg-white rounded-xl   max-w-5xl h-full max-h-full  flex flex-col divide-gray-200/70 "
+          "w-full bg-white relative rounded-xl opa  max-w-5xl h-full   flex flex-col divide-gray-200/70 "
         }
       >
         <div className="flex py-5 border-b px-6 ">
@@ -232,8 +241,8 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                   </div>
                 </div>
               </Tabs.Panel>
-              <Tabs.Panel value={STEPS.LOCATION} key={STEPS.LOCATION}>
-                <div className="w-full h-full max-w-2xl mx-auto flex flex-col justify-center">
+              <Tabs.Panel value={STEPS.LOCATION}>
+                <div className="w-full h-full  max-w-2xl mx-auto flex flex-col justify-center ">
                   <h2 className="text-3xl font-medium">
                     Di mana lokasi tempat Anda ?
                   </h2>
@@ -241,7 +250,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                     Alamat Anda hanya akan diberitahukan kepada tamu setelah
                     anda melakukan reservasi
                   </p>
-                  <div className="w-full aspect-square  bg-gray-100 mt-4 rounded-lg"></div>
+                  <GetLocation lokasi={lokasi} setLokasi={setLokasi}/>
                 </div>
               </Tabs.Panel>
               <Tabs.Panel value={STEPS.INFO} key={STEPS.INFO}>

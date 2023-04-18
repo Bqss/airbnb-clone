@@ -50,7 +50,7 @@ Tabs.Panel = ({ children, className, value}) => {
       enterFrom ="opacity-0 invisible"
       enterTo ="opacity-1 static visible"
       leave ="duration-1000 transition-all top-0 asbolute inset-x-0"
-      leaveFrom ="opacity-100 top-0 inset-x-0 visible "
+      leaveFrom ="opacity-100  visible "
       leaveTo = "opacity-0 invisible"
       as={Fragment}
       className={"h-full px-7 py-5 "+className}

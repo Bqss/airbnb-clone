@@ -12,12 +12,12 @@ const ModalContext = createContext({
   onClose: () => {},
 });
 
-const Modal = ({ children, className, isOpen, onClose, transition }) => {
+const Modal = ({ children, className, isOpen, onClose, as, transition }) => {
   return (
     <ModalContext.Provider value={{ onClose }}>
       <Transition show={isOpen} className="fixed inset-0 z-10 overflow-hidden  bg-transparent">
         <Transition.Child
-          as={Fragment}
+          as={as ||Fragment }
           enter="transition-all  duration-300"
           enterFrom="opacity-0"
           enterTo="opacity-100"
@@ -25,7 +25,7 @@ const Modal = ({ children, className, isOpen, onClose, transition }) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 backdrop-brightness-[.6] z-200"></div>
+          <div className="fixed inset-0 backdrop-brightness-[.6] z-10"></div>
         </Transition.Child>
         <Transition.Child {...transition} as={Fragment}>
           <div

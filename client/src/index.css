@@ -24,17 +24,25 @@
   input[type="text"],
   input[type="password"],
   input[type="email"] {
-    @apply w-full outline-none rounded-md inline-block  transition-colors duration-200;
+    @apply w-full outline-none  inline-block  transition-colors duration-200;
   }
-
-  
-
 }
 
 @layer components{
   button{
     @apply transition-colors hover:bg-gray-100 duration-150;
   }
+
+}
+
+
+.leaflet-bottom,
+.leaflet-control,
+.leaflet-pane, 
+.leaflet-top,
+.leaflet-right,
+.leaflet-left{
+  z-index: 0  !important;
 
 }
 
