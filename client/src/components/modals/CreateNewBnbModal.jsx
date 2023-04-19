@@ -10,11 +10,10 @@ import { GrRestroomMen } from "react-icons/gr";
 import { IoPeopleSharp } from "react-icons/io5";
 import Stepper from "../atoms/Stepper";
 import CheckBox from "../atoms/CheckBox";
-import FileInput from "../atoms/FileInput";
+import ImageUpload from "../atoms/MainImageUpload";
 import TextArea from "../atoms/TextArea";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
-import SelectLocation from "../atoms/SelectLocation";
-import Map from "../atoms/Map";
+
 import GetLocation from "../molecules/GetLocation";
 
 const STEPS = {
@@ -30,7 +29,7 @@ const STEPS = {
 };
 
 const CreateNewBnbModal = ({ isOpen, onClose }) => {
-  const [currentStep, setCurrentStep] = useState(STEPS.CATEGORY);
+  const [currentStep, setCurrentStep] = useState(STEPS.IMAGES);
   const [category, setCategory] = useState("");
   const [tipeRumah, setTipeRumah] = useState("");
   const [isValid, setIsValid] = useState(false);
@@ -97,11 +96,6 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
     currentStep,
   ]);
 
-
-  useEffect(() => {
-    console.log(lokasi);
-  },[lokasi])
-
   const next = () => {
     setCurrentStep((e) => e + 1);
   };
@@ -144,7 +138,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
     >
       <Modal.Body
         className={
-          "w-full bg-white relative rounded-xl opa  max-w-5xl h-full   flex flex-col divide-gray-200/70 "
+          "w-full bg-white rounded-xl  max-w-5xl h-full   flex flex-col divide-gray-200/70 "
         }
       >
         <div className="flex py-5 border-b px-6 ">
@@ -155,9 +149,9 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
         </div>
         <div className="flex-1 flex flex-col overflow-y-auto">
           <Tabs activeTab={currentStep} className="h-full ">
-            <Tabs.Panels className="h-full">
+            <Tabs.Panels className="h-full ">
               <Tabs.Panel value={STEPS.CATEGORY} key={STEPS.CATEGORY}>
-                <div className="w-full max-w-2xl mx-auto flex flex-col justify-center">
+                <div className="w-full max-w-2xl mx-auto flex flex-col ">
                   <h2 className="text-3xl font-medium mt-5">
                     Opsi mana yang terbaik untuk mendeskripsikan tempat anda?{" "}
                   </h2>
@@ -178,6 +172,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                         <span className="block text-sm">{des.label}</span>
                       </RadioButton>
                     ))}
+                
                   </div>
                 </div>
               </Tabs.Panel>
@@ -318,7 +313,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                 </div>
               </Tabs.Panel>
               <Tabs.Panel value={STEPS.IMAGES} key={STEPS.IMAGES}>
-                <div className="w-full h-full max-w-2xl mx-auto flex flex-col justify-center">
+                <div className="w-full h-fit py-10  max-w-2xl mx-auto flex flex-col ">
                   <h2 className="text-3xl font-medium ">
                     Tambahkan beberapa foto kabin anda
                   </h2>
@@ -327,7 +322,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                     foto atau mengubahnya nanti
                   </p>
                   <div className="mt-8  gap-3">
-                    <FileInput className="w-full aspect-[7/5]" />
+                    <ImageUpload className="w-full aspect-[7/5]" image={images} setter={setImages}/>
                   </div>
                 </div>
               </Tabs.Panel>
@@ -399,14 +394,14 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                 </div>
               </Tabs.Panel>
             </Tabs.Panels>
-          </Tabs>
-          <Footer
+          </Tabs>  
+        </div>
+        <Footer
             proggress={currentStep / STEPS.PRICE}
             isValid={isValid}
             prev={prev}
             next={next}
           />
-        </div>
       </Modal.Body>
     </Modal>
   );

@@ -1,10 +1,12 @@
-import { useState, useRef } from "react";
+import { useState, useRef, memo } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { IoImageOutline, IoImagesOutline } from "react-icons/io5";
+import ImageUploader from "./ImageUploader";
 
-function FileInput({ setter, image }) {
+function MainImageUpload({ setter }) {
   const [onDragOver, setDragOver] = useState(false);
   const [wrongType, setWrongType] = useState(false);
+  const [image, setImage] = useState([]);
   const main = useRef();
 
   const imageType = [
@@ -14,11 +16,11 @@ function FileInput({ setter, image }) {
     "image/gif",
     "image/webp",
   ];
-
-  const validateImage = (image) => {
+  
+  const validateImage = (images) => {
     let result = false;
-    imageType.forEach((imageType) => {
-      if (image?.type == imageType) {
+    [...images]?.forEach((img) => {
+      if (imageType.includes(img?.type)) {
         result = true;
         return;
       }
@@ -28,41 +30,45 @@ function FileInput({ setter, image }) {
 
   function handleDrop(ev) {
     ev.preventDefault();
-    if (validateImage(ev.dataTransfer.files[0])) {
+    console.log(ev.dataTransfer.files);
+    if (validateImage(ev.dataTransfer.files)) {
       setWrongType(false);
-      return;
+      setImage([...ev.dataTransfer.files]);
+    }else{
+      setWrongType(true);
     }
-    setWrongType(true);
+    setDragOver(false);
+
   }
   const handleChange = (ev) => {
     ev.preventDefault();
-    if (validateImage(ev.target?.files?.item(0))) {
-      uploadImg(ev.target?.files?.item(0));
+    if (validateImage(ev.target?.files)) {
+      setImage([...ev.target?.files]);
       setWrongType(false);
       return;
     }
     setWrongType(true);
   };
 
-  return (
-    <div
-      className="flex-1 p-5 rounded-md  aspect-square lg:max-h-[55vh] "
-      onDragEnter={() => setDragOver(true)}
-      onDragLeave={() => setDragOver(false)}
-      onDragOver={(ev) => ev.preventDefault()}
-      onDrop={handleDrop}
-    >
+  if (!image.length > 0) {
+    return (
       <div
-        className={
-          "w-full pointer-events-none relative  h-full rounded-sm border-2 border-dotted" +
-          (onDragOver
-            ? " bg-gray-100   border-black"
-            : wrongType
-            ? " border-red-600 bg-red-800/10"
-            : " border-gray-500")
-        }
+        className="flex-1 rounded-md  aspect-square "
+        onDragEnter={() => setDragOver(true)}
+        onDragLeave={() => setDragOver(false)}
+        onDragOver={(ev) => ev.preventDefault()}
+        onDrop={handleDrop}
       >
-        {!image ? (
+        <div
+          className={
+            "w-full pointer-events-none relative text-center h-full rounded-sm border-2 border-dotted" +
+            (onDragOver
+              ? " bg-gray-100   border-black"
+              : wrongType
+              ? " border-red-600 bg-red-800/10"
+              : " border-gray-500")
+          }
+        >
           <>
             <div className="flex items-center justify-center h-full ">
               <div className="flex gap-2 relative items-center space-y-2 flex-col">
@@ -72,7 +78,7 @@ function FileInput({ setter, image }) {
                   </span>
                 )}
                 <IoImagesOutline className="w-12 h-12" />
-                <span className="text-xl md:text-base  ">
+                <span className="text-xl w-full  md:text-lg  ">
                   {onDragOver
                     ? "Drop untuk mengupload gambar"
                     : "Pilih setidaknya 5 foto"}
@@ -103,25 +109,26 @@ function FileInput({ setter, image }) {
               onChange={handleChange}
             />
           </>
-        ) : (
-          <div className="w-full h-full relative p-3 md:p-5">
-            <img
-              src={image.url}
-              alt={image.originalFilename}
-              className="w-full h-full object-contain"
-            />
-            <button
-              className="absolute bg-white/50 p-1 rounded-full right-3 bottom-3 pointer-events-auto hover:bg-white "
-              onClick={() => deleteImage(image)}
-              title="Delete Image"
-            >
-              <AiFillDelete className="w-5 h-5 " />
-            </button>
-          </div>
-        )}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-3">
+      <ImageUploader image={image[0]} setImage={setImage}/>
+      <div className="flex gap-3">
+        <ImageUploader image={image[1]} setImage={setImage}/>
+        <ImageUploader image={image[2]} setImage={setImage}/>
+      </div>
+      <div className="flex gap-3">
+        <ImageUploader image={image[3]} setImage={setImage}/>
+        <ImageUploader image={image[4]} setImage={setImage}/>
       </div>
     </div>
   );
 }
 
-export default FileInput;
+const ResultImage = () => {};
+
+export default memo(MainImageUpload);
