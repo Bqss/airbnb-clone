@@ -29,8 +29,8 @@ const STEPS = {
 };
 
 const CreateNewBnbModal = ({ isOpen, onClose }) => {
-  const [currentStep, setCurrentStep] = useState(STEPS.IMAGES);
-  const [category, setCategory] = useState("");
+  const [currentStep, setCurrentStep] = useState(STEPS.CATEGORY);
+  const [category, setCategory] = useState("")
   const [tipeRumah, setTipeRumah] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [images, setImages] = useState([]);
@@ -38,7 +38,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
-  const [query, setQuery] = useState("");
+  const [fasility, setFasility] = useState([]);
   const [infoDasar, setInfoDasar] = useState({
     tamu: 1,
     kamar: 1,
@@ -66,7 +66,9 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
         break;
       case STEPS.IMAGES:
         setTimeout(() => {
-          setIsValid(() => images.length < 5);
+          setIsValid(
+            () => [...images].filter((e) => e.uploadedImage?.url).length < 5
+          );
         }, 0);
         break;
       case STEPS.JUDUL:
@@ -97,11 +99,45 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
   ]);
 
   const next = () => {
+    if(currentStep == STEPS.PRICE){
+      console.log({
+        category,
+        tipeRumah,
+        isValid,
+        images : images.map(e => e.uploadedImage),
+        lokasi,
+        price,
+        description,
+        title,
+        infoDasar
+      })
+      return ;
+    }
     setCurrentStep((e) => e + 1);
   };
 
   const prev = () => {
     setCurrentStep((e) => e - 1);
+  };
+
+  const increment = () => {
+    setPrice((e) => {
+      const crr = e.slice(3);
+      if(crr!=""){
+        return `Rp.${(parseInt(crr) + 1000)}`
+      }
+      return e;
+    });
+  };
+
+  const decrement = () => {
+    setPrice((e) => {
+      const crr = e.slice(3);
+      if(crr!="" && parseInt(crr)>=1000){
+        return `Rp.${(parseInt(crr) - 1000)}`
+      }
+      return e;
+    });
   };
 
   const onPriceChange = ({ target }) => {
@@ -117,11 +153,6 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
     });
   };
 
-  const onSubmit = () => {
-    switch (currentStep) {
-      case STEPS.CATEGORY:
-    }
-  };
 
   return (
     <Modal
@@ -172,7 +203,6 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                         <span className="block text-sm">{des.label}</span>
                       </RadioButton>
                     ))}
-                
                   </div>
                 </div>
               </Tabs.Panel>
@@ -245,7 +275,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                     Alamat Anda hanya akan diberitahukan kepada tamu setelah
                     anda melakukan reservasi
                   </p>
-                  <GetLocation lokasi={lokasi} setLokasi={setLokasi}/>
+                  <GetLocation lokasi={lokasi} setLokasi={setLokasi} />
                 </div>
               </Tabs.Panel>
               <Tabs.Panel value={STEPS.INFO} key={STEPS.INFO}>
@@ -313,7 +343,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                 </div>
               </Tabs.Panel>
               <Tabs.Panel value={STEPS.IMAGES} key={STEPS.IMAGES}>
-                <div className="w-full h-fit py-10  max-w-2xl mx-auto flex flex-col ">
+                <div className="w-full h-fit py-10  max-w-2xl mx-auto flex flex-col relative">
                   <h2 className="text-3xl font-medium ">
                     Tambahkan beberapa foto kabin anda
                   </h2>
@@ -322,7 +352,11 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                     foto atau mengubahnya nanti
                   </p>
                   <div className="mt-8  gap-3">
-                    <ImageUpload className="w-full aspect-[7/5]" image={images} setter={setImages}/>
+                    <ImageUpload
+                      className="w-full aspect-[7/5]"
+                      image={images}
+                      setter={setImages}
+                    />
                   </div>
                 </div>
               </Tabs.Panel>
@@ -374,8 +408,8 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                   </p>
                   <div className="mt-8 ">
                     <div className="p-8 rounded-xl flex items-center gap-3 bg-gray-100">
-                      <button className="p-4 rounded-full  bg-white border border-gray-300 hover:border-black">
-                        <AiOutlinePlus className="w-4 h-4" />
+                      <button className="p-4 rounded-full  bg-white border border-gray-300 hover:border-black" onClick={decrement}>
+                        <AiOutlineMinus className="w-4 h-4" />
                       </button>
                       <input
                         type="text"
@@ -386,22 +420,23 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                         pattern={"[1-9]"}
                         value={price}
                       />
-                      <button className="p-4 rounded-full  bg-white border border-gray-300 hover:border-black">
-                        <AiOutlineMinus className="w-4 h-4" />
+
+                      <button className="p-4 rounded-full  bg-white border border-gray-300 hover:border-black" onClick={increment}>
+                        <AiOutlinePlus className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
                 </div>
               </Tabs.Panel>
             </Tabs.Panels>
-          </Tabs>  
+          </Tabs>
         </div>
         <Footer
-            proggress={currentStep / STEPS.PRICE}
-            isValid={isValid}
-            prev={prev}
-            next={next}
-          />
+          proggress={currentStep / STEPS.PRICE}
+          isValid={isValid}
+          prev={prev}
+          next={next}
+        />
       </Modal.Body>
     </Modal>
   );
