@@ -11,7 +11,11 @@ class MediaApi {
         media,
       },
       {
-        signal : controller.signal
+        signal : controller.signal,
+        headers: {
+            "Content-Type" : "multipart/form-data",
+            "SameSite"   : "None",
+        }
       });
       return result.data;
     } catch (error) {

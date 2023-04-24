@@ -15,6 +15,8 @@ import TextArea from "../atoms/TextArea";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
 import GetLocation from "../molecules/GetLocation";
+import { useMutation } from "react-query";
+import AvenueApi from "../../api/services/avenueApi";
 
 const STEPS = {
   CATEGORY: 0,
@@ -29,6 +31,9 @@ const STEPS = {
 };
 
 const CreateNewBnbModal = ({ isOpen, onClose }) => {
+
+  const { mutate ,isLoading} = useMutation(AvenueApi.newAvenue);
+
   const [currentStep, setCurrentStep] = useState(STEPS.CATEGORY);
   const [category, setCategory] = useState("")
   const [tipeRumah, setTipeRumah] = useState("");
@@ -38,7 +43,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
-  const [fasility, setFasility] = useState([]);
+  const [fasilitas, setFasilitas] = useState(fasility.map(e => ({[e.value] :  false})).reduce((p,c) => ({...p,...c}),{}));
   const [infoDasar, setInfoDasar] = useState({
     tamu: 1,
     kamar: 1,
@@ -100,16 +105,18 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
 
   const next = () => {
     if(currentStep == STEPS.PRICE){
-      console.log({
-        category,
-        tipeRumah,
-        isValid,
-        images : images.map(e => e.uploadedImage),
-        lokasi,
-        price,
-        description,
-        title,
-        infoDasar
+
+      mutate({
+        alamat : lokasi,
+        available : tipeRumah,
+        deskripsi : description,
+        fasilitas,
+        foto: images.map(img => ({url: img.uploadedImage.url, name: img.uploadedImage.original_filename})),
+        harga : parseInt(price.slice(3)),
+        infoDasar,
+        judul : title,
+        kategori: category,
+        tag : category
       })
       return ;
     }
@@ -334,7 +341,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                   </p>
                   <div className="grid mt-8 grid-cols-3 gap-3">
                     {fasility.map((e, i) => (
-                      <CheckBox value={e.value} key={i} name={e.label}>
+                      <CheckBox value={e.value} key={i} name={e.value} selected={fasilitas[e.value]??false} setSelected={setFasilitas}>
                         <e.icon className="w-8 h-8 flex flex-shrink-0" />
                         <h3 className="mt-3">{e.label}</h3>
                       </CheckBox>
