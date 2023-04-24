@@ -16,24 +16,31 @@ class MediaController {
     const media = req.files.media;
 
     try {
-      //   await media.mv(`./tmp/-${media.name}`);
-      //   const option = {
-      //     use_filename: true,
-      //     unique_filename: false,
-      //   };
-      //   const mediaPath = `.\\tmp\\${userId}-${media.name}`;
-      console.log(media);
-
-      //   const result = await cloudinary.v2.uploader.upload(mediaPath, option);
-      // console.log(result);
-      res.sendStatus(200);
+        await media.mv(`./tmp/-${media.name}`);
+        const option = {
+          use_filename: true,
+          unique_filename: false,
+        };
+        const mediaPath = `.\\tmp\\-${media.name}`;
+        const result = await cloudinary.v2.uploader.upload(mediaPath, option);
+      
+      res.status(200).send(result);
     } catch (err) {
       console.log(err);
       res.sendStatus(500);
     }
   }
 
-  static async deleteImage(req, res) {}
+  static async deleteImage(req, res) {
+    const {pid} = req.params;
+
+    try {
+        await cloudinary.v2.api.delete_resources(pid);
+        res.sendStatus(200);
+    } catch (error) {
+        res.sendStatus(500);
+    }
+  }
 }
 
 export default MediaController;
