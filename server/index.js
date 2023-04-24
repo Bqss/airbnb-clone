@@ -6,6 +6,7 @@ import authRoute from "./routes/Authroute.js";
 import fileUpload from "express-fileupload";
 import dotenv  from "dotenv";
 import { mediaRoute } from "./routes/MediaRoute.js";
+import { avenueRoute } from "./routes/AvenueRoute.js";
 
 dotenv.config();
 const app = express();
@@ -33,6 +34,8 @@ app.use(
 
 app.use("/api/auth",authRoute);
 app.use("/api/media",mediaRoute);
+app.use("/api/avenue",avenueRoute);
+
 
 
 

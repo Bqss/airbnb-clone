@@ -10,17 +10,36 @@ const avenueSchema = Schema({
         required: true
     },
     alamat: {
-        type: String,
+        type: {
+            name: String,
+            state: String,
+            country: String,
+            latitude: Number,
+            longitude: Number
+        },
         required: true
     },
     informasiDasar : {
-        jumlahTamu: Number,
-        jumlahKamar: Number,
-        jumlahTempatTidur: Number,
-        jumlahKamarMandi: Number,
+        tamu: Number,
+        kamar: Number,
+        tempatTidur: Number,
+        kamarMandi: Number,
     },
     fasilitas: {
-        type: [String],
+        type: {
+            wifi : Boolean,
+            televisi : Boolean,
+            dapur : Boolean,
+            tempatparkir : Boolean,
+            ac : Boolean,
+            kolamrenang : Boolean,
+            bakmandi : Boolean,
+            perapian : Boolean,
+            piano : Boolean,
+            peralatanolahraga : Boolean,
+            p3k : Boolean,
+            pemadamapi : Boolean,
+        },
         required : true
     },
     foto: [{
@@ -28,7 +47,6 @@ const avenueSchema = Schema({
         name: String
     }],
     judul: String,
-    tag: String,
     deskripsi: String,
     harga: Number 
 });
