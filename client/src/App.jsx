@@ -6,7 +6,7 @@ import RegisterPage from "./pages/RegisterPage";
 import axios from "axios";
 import { Provider } from "react-redux";
 import mainStore from "./store/main";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.withCredentials = true;

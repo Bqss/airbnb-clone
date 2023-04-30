@@ -1,7 +1,6 @@
 import React, { Fragment, memo, useEffect, useMemo, useState } from "react";
 import Modal from "../Modal";
 import { HiXMark, HiOutlineHome } from "react-icons/hi2";
-
 import Tabs from "../Tabs";
 import Button from "../atoms/Button";
 import RadioButton from "../atoms/RadioButton";
@@ -14,9 +13,8 @@ import CheckBox from "../atoms/CheckBox";
 import ImageUpload from "../atoms/MainImageUpload";
 import TextArea from "../atoms/TextArea";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
-
+import {useMutation} from "@tanstack/react-query";
 import GetLocation from "../molecules/GetLocation";
-import { useMutation } from "react-query";
 import AvenueApi from "../../api/services/avenueApi";
 
 const STEPS = {
@@ -33,7 +31,9 @@ const STEPS = {
 
 const CreateNewBnbModal = ({ isOpen, onClose }) => {
 
-  const { mutate ,isLoading } = useMutation(AvenueApi.newAvenue);
+  const { mutate ,isLoading } = useMutation({
+    mutationFn : AvenueApi.createBnb,
+  })
 
   const [currentStep, setCurrentStep] = useState(STEPS.CATEGORY);
   const [category, setCategory] = useState("")

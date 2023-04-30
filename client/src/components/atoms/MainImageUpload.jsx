@@ -9,7 +9,7 @@ import {
   useMemo,
 } from "react";
 import { AiFillDelete } from "react-icons/ai";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { IoImageOutline, IoImagesOutline } from "react-icons/io5";
 import MediaApi, { signal } from "../../api/services/mediaApi";
 import { ClipLoader } from "react-spinners";

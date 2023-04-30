@@ -1,7 +1,7 @@
 import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import { BeatLoader } from "react-spinners";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { debounce } from "lodash";
 import { MdMapsHomeWork } from "react-icons/md";
 import { BsCheck2, BsChevronExpand } from "react-icons/bs";
