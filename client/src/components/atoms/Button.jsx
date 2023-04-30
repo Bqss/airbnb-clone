@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
+import { ClipLoader } from "react-spinners";
 
-const Button = ({className, disabled, children, isLoading = false,onClick,  disabledWhenLoading = false ,...d}) => {
+const Button = ({className, disabled, children, isLoading ,onClick,  disabledWhenLoading = true ,...d}) => {
   return (
-    <button className={[' px-4 py-2   disabled:cursor-not-allowed ',className].join(" ")} disabled={disabledWhenLoading && isLoading || disabled} onClick={onClick} {...d}>
-      {children}
+    <button className={[' px-4 py-2   disabled:cursor-not-allowed ',className].join(" ")} disabled={(disabledWhenLoading && isLoading) || disabled} onClick={onClick} {...d}>
+      {isLoading ? <ClipLoader size={20} color={"#fff"} /> : children}
     </button>
   )
 }

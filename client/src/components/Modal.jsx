@@ -10,12 +10,13 @@ import useClickOutside from "../hooks/useClickOutside";
 const ModalContext = createContext({
   isOpen: false,
   onClose: () => {},
+  closeOnClickOutside : true
 });
 
-const Modal = ({ children, className, isOpen, onClose, as, transition }) => {
+const Modal = ({ children, className, isOpen, closeOnClickOutside = true, onClose, as, transition }) => {
   return (
-    <ModalContext.Provider value={{ onClose }}>
-      <Transition show={isOpen} className="fixed inset-0 z-10 overflow-hidden  bg-transparent">
+    <ModalContext.Provider value={{ onClose, closeOnClickOutside }}>
+      <Transition show={isOpen} className="fixed inset-0 z-20 overflow-hidden  bg-transparent">
         <Transition.Child
           as={as ||Fragment }
           enter="transition-all  duration-300"
@@ -43,7 +44,7 @@ const Modal = ({ children, className, isOpen, onClose, as, transition }) => {
 };
 
 Modal.Body = ({ className, children }) => {
-  const { onClose } = useContext(ModalContext);
+  const { onClose, closeOnClickOutside } = useContext(ModalContext);
   useEffect(() => {
     if(document.body.scrollHeight > window.innerHeight ){
       document.body.classList.add("mr-[17px]");
@@ -54,7 +55,7 @@ Modal.Body = ({ className, children }) => {
       document.body.classList.remove(...["overflow-hidden", "mr-[17px]","relative"]);
     };
   }, []);
-  const modalRef = useClickOutside(onClose);
+  const modalRef =  useClickOutside(onClose, !closeOnClickOutside);
   return (
     <div className={className} ref={modalRef}>
       {children}

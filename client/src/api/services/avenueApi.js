@@ -15,21 +15,27 @@ class AvenueApi {
     infoDasar,
 
   }) {
-    AxiosInstance.post("/avenue",{
-        kategori,
-        alamat,
-        foto,
-        available,
-        harga,
-        deskripsi,
-        judul,
-        fasilitas,
-        infoDasar
-    },{
-        headers:{
-            "Content-Type" : "application/json"
-        }
-    })
+    try{
+        const result = await AxiosInstance.post("/avenue",{
+            kategori,
+            alamat,
+            foto,
+            available,
+            harga,
+            deskripsi,
+            judul,
+            fasilitas,
+            infoDasar
+        },{
+            headers:{
+                "Content-Type" : "application/json"
+            }
+        })
+
+        return result.data;
+    }catch(err){
+        return err;
+    }
   }
 }
 

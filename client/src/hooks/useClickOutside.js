@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from "react";
 
-const useClickOutside = (callback) => {
+const useClickOutside = (callback, revert) => {
   const componentRef = useRef();
   const listener = (ev) => {
     ev.stopPropagation();
-    if (componentRef.current && !componentRef.current.contains(ev.target)) {
-      callback();
+    if (!revert && componentRef.current && !componentRef.current.contains(ev.target)) {
+       callback();
     }
   };
   useEffect(() => {

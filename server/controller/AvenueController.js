@@ -21,7 +21,7 @@ class AvenueController{
             } catch (error) {
                 res.sendStatus(500);
             }
-            
+            return ;
         }
         return res.sendStatus(400);
     }

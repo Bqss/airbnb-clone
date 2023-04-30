@@ -9,6 +9,7 @@ import { desc, fasility } from "../../data";
 import { GrRestroomMen } from "react-icons/gr";
 import { IoPeopleSharp } from "react-icons/io5";
 import Stepper from "../atoms/Stepper";
+import toaster from "react-hot-toast";
 import CheckBox from "../atoms/CheckBox";
 import ImageUpload from "../atoms/MainImageUpload";
 import TextArea from "../atoms/TextArea";
@@ -32,7 +33,7 @@ const STEPS = {
 
 const CreateNewBnbModal = ({ isOpen, onClose }) => {
 
-  const { mutate ,isLoading} = useMutation(AvenueApi.newAvenue);
+  const { mutate ,isLoading } = useMutation(AvenueApi.newAvenue);
 
   const [currentStep, setCurrentStep] = useState(STEPS.CATEGORY);
   const [category, setCategory] = useState("")
@@ -117,6 +118,27 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
         judul : title,
         kategori: category,
         tag : category
+      },{
+        
+        onSuccess(data){
+          setCurrentStep(STEPS.CATEGORY);
+          setCategory("");
+          setIsValid(false);
+          setImages([]);
+          setLokasi([])
+          setPrice("");
+          setDescription("")
+          setTitle("")
+          setFasilitas(fasility.map(e => ({[e.value] :  false})).reduce((p,c) => ({...p,...c}),{}))
+          setInfoDasar({
+            tamu : 1,
+            kamar : 1,
+            tempatTidur : 1,
+            kamarMandi: 1
+          });
+          toaster("success creating new bnb");
+          onClose();
+        }
       })
       return ;
     }
@@ -165,6 +187,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      closeOnClickOutside ={false}
       transition={{
         enter: "transition-all  duration-500",
         enterFrom: "opacity-0 translate-y-full",
@@ -180,7 +203,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
         }
       >
         <div className="flex py-5 border-b px-6 ">
-          <button className="bg-white mr-auto bg-transparent" onClick={onClose}>
+          <button className="bg-white mr-auto bg-transparent p-1 rounded-lg" onClick={onClose}>
             <HiXMark className="w-5 h-5" />
           </button>
           <span className="mr-auto font-bold text-lg">Air Bnb Your Home</span>
@@ -442,6 +465,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
           proggress={currentStep / STEPS.PRICE}
           isValid={isValid}
           prev={prev}
+          isUploading = {isLoading}
           next={next}
         />
       </Modal.Body>
@@ -449,7 +473,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
   );
 };
 
-const Footer = memo(({ proggress, isValid, prev, next }) => {
+const Footer = memo(({ proggress, isValid, prev, next, isUploading }) => {
   return (
     <div className="mt-auto flex-shrink-0">
       <div className="w-full bg-gray-200 h-[.35rem] overflow-hidden">
@@ -473,6 +497,7 @@ const Footer = memo(({ proggress, isValid, prev, next }) => {
           className="bg-slate-800 ml-auto hover:bg-black  rounded-lg px-8 py-3 text-white disabled:bg-gray-500"
           onClick={next}
           disabled={isValid}
+          isLoading={isUploading}
         >
           Berikutnya
         </Button>

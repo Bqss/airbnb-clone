@@ -202,9 +202,11 @@ const ImageUploader = ({ setImages, className, i, image }) => {
   });
 
   useEffect(() => {
+    reset();
     if (image && !image.uploadedImage) {
       mutate({ media: image.previewImage , controller })
     };
+    
   }, [image]);
 
   const handleDrop = (ev) => {

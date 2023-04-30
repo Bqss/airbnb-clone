@@ -15,9 +15,6 @@ const ModalSlice = createSlice({
             state.openLoginModal =! state.openLoginModal
         },
         toggleOpenAddAirbnbModal : (state) => {
-            state.openAddAirbnbModal =! state.openAddAirbnbModal
-        },
-        toggleOpenAddAirbnbModal : (state) => {
             state.openAddAirBnbModal =! state.openAddAirBnbModal
         },
     }
