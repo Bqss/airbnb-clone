@@ -1,6 +1,7 @@
 import { Transition } from "@headlessui/react";
 import React, { Fragment, createContext, useContext, useState } from "react";
 import { GrPrevious, GrNext } from "react-icons/gr";
+import WithFade from "../WithFade";
 
 const CarouselContext = createContext({
   active: 0,
@@ -9,71 +10,49 @@ const CarouselContext = createContext({
 const Carousel = ({ children, total }) => {
   const [active, setActive] = useState(0);
   const [onHover, setOnHover] = useState(false);
-  const next = () => {
+  const next = (ev) => {
+    ev.preventDefault();
+    ev.stopPropagation();
     setActive((active) => (active < 4 ? active + 1 : 0));
   };
-  const prev = () => {
+  const prev = (ev) => {
+    ev.preventDefault();
+    ev.stopPropagation();
     setActive((active) => (active > 0 ? active - 1 : 4));
   };
   return (
     <CarouselContext.Provider value={{ active }}>
       <div
-        className="relative  rounded-xl bg-gray-200 opacity"
+        className="relative  rounded-xl bg-gray-100 "
         onMouseEnter={() => setOnHover(true)}
         onMouseLeave={() => setOnHover(false)}
       >
+        <div className="h-[20%] absolute top-0 w-full bg-gradient-to-b pointer-events-none from-black/5  z-10 "></div>
+        <div className="h-[20%] absolute w-full bg-gradient-to-t bottom-0 pointer-events-none  from-black/5  z-10 "></div>
         <div className="flex flex-col justify-between absolute inset-0 pointer-events-none">
           <div></div>
-          <Transition
-            as={Fragment}
-            show={onHover}
-            enter="transition-all duration-300 "
-            leave="transition-all duration-300"
-            enterFrom="opacity-0 "
-            enterTo="opacity-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="flex px-2">
-              <Transition
-                as={Fragment}
-                show={active > 0}
-                enter="transition-all duration-300 "
-                leave="transition-all duration-300"
-                enterFrom="opacity-0 "
-                enterTo="opacity-100"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
+          <WithFade show={onHover}>
+            <div className="flex ">
+              <WithFade show={active > 0}>
                 <button
                   onClick={prev}
                   className=" p-3 transition-transform duration-150 rounded-full pointer-events-auto bg-white hover:bg-white hover:scale-105"
                 >
                   <GrPrevious className="w-3 h-3" />
                 </button>
-              </Transition>
-              <Transition
-                as={Fragment}
-                show={active < total - 1}
-                enter="transition-all duration-300 "
-                leave="transition-all duration-300"
-                enterFrom="opacity-0 "
-                enterTo="opacity-100"
-                leaveFrom="opacity-100"
-                leaveTo="opacity"
-              >
+              </WithFade>
+
+              <WithFade show={active < total}>
                 <button
                   onClick={next}
                   className=" p-3 transition-transform duration-150 rounded-full ml-auto   pointer-events-auto bg-white hover:bg-white hover:scale-105"
                 >
                   <GrNext className="w-3 h-3" />
                 </button>
-              </Transition>
+              </WithFade>
             </div>
-          </Transition>
-          <div>
-
-          </div>
+          </WithFade>
+          <div></div>
         </div>
         <div className="overflow-hidden aspect-square">{children}</div>
       </div>
@@ -84,18 +63,9 @@ const Carousel = ({ children, total }) => {
 Carousel.Panel = ({ children, i }) => {
   const { active } = useContext(CarouselContext);
   return (
-    <Transition
-      as={Fragment}
-      show={active === i}
-      enter="transition-all duration-300 "
-      leave="transition-all duration-300"
-      enterFrom="opacity-0 "
-      enterTo="opacity-100"
-      leaveFrom="opacity-100"
-      leaveTo="opacity-0"
-    >
+    <WithFade show={active == i}>
       <div className="w-full h-full">{children}</div>
-    </Transition>
+    </WithFade>
   );
 };
 
