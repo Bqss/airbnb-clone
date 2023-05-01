@@ -32,7 +32,7 @@ const STEPS = {
 const CreateNewBnbModal = ({ isOpen, onClose }) => {
 
   const { mutate ,isLoading } = useMutation({
-    mutationFn : AvenueApi.createBnb,
+    mutationFn : AvenueApi.newAvenue,
   })
 
   const [currentStep, setCurrentStep] = useState(STEPS.CATEGORY);

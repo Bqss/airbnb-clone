@@ -9,7 +9,7 @@ const GetLocation = ({lokasi, setLokasi}) => {
   const [map, setMap] = useState(null);
 
   useEffect(() => {
-    if(lokasi.name) map.setView([lokasi.latitude, lokasi.longitude], map.getZoom());
+    if(lokasi.name && map) map.setView([lokasi.latitude, lokasi.longitude], map.getZoom());
   },[lokasi]);
 
   const autoSearch = () => {
