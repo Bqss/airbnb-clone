@@ -23,7 +23,7 @@ const Carousel = ({ children, total }) => {
   return (
     <CarouselContext.Provider value={{ active }}>
       <div
-        className="relative  rounded-xl bg-gray-100 "
+        className="relative  rounded-xl overflow-hidden bg-gray-50 "
         onMouseEnter={() => setOnHover(true)}
         onMouseLeave={() => setOnHover(false)}
       >
