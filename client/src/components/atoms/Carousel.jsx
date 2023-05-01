@@ -32,7 +32,7 @@ const Carousel = ({ children, total }) => {
         <div className="flex flex-col justify-between absolute inset-0 pointer-events-none">
           <div></div>
           <WithFade show={onHover}>
-            <div className="flex ">
+            <div className="flex px-2">
               <WithFade show={active > 0}>
                 <button
                   onClick={prev}
@@ -42,7 +42,7 @@ const Carousel = ({ children, total }) => {
                 </button>
               </WithFade>
 
-              <WithFade show={active < total}>
+              <WithFade show={active < total-1}>
                 <button
                   onClick={next}
                   className=" p-3 transition-transform duration-150 rounded-full ml-auto   pointer-events-auto bg-white hover:bg-white hover:scale-105"
