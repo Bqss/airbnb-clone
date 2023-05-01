@@ -5,8 +5,14 @@ import LoginModal from "./../components/modals/LoginModal";
 import RegisterModal from "./../components/modals/RegisterModal";
 import CreateNewBnbModal from "./../components/modals/CreateNewBnbModal";
 import { useSelector } from "react-redux";
-import { toggleOpenAddAirbnbModal, toggleOpenLoginModal, toggleOpenRegisterModal } from "./../../src/fitures/modalSlice";
+import {
+  toggleOpenAddAirbnbModal,
+  toggleOpenLoginModal,
+  toggleOpenRegisterModal,
+} from "./../../src/fitures/modalSlice";
 import { useDispatch } from "react-redux";
+import Container from "../components/atoms/Container";
+import Categories from "../components/organism/Categories";
 
 export default function Layout() {
   const { openLoginModal, openRegisterModal, openAddAirBnbModal } = useSelector(
@@ -44,12 +50,16 @@ export default function Layout() {
         isOpen={openAddAirBnbModal}
         onClose={() => dispatch(toggleOpenAddAirbnbModal())}
       />
-      <div className="p-4 flex flex-col min-h-screen max-w-7xl mx-auto">
+
+      <>
         <Header />
-        <main className="mt-20">
-          <Outlet />
-        </main>
-      </div>
+        <Categories/>
+        <Container>
+          <main className="mt-8">
+            <Outlet />
+          </main>
+        </Container>
+      </>
     </>
   );
 }

@@ -12,10 +12,8 @@ export default function IndexPage() {
      initialData : []
   })
 
-
-
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-6 gap-8">
       {data.map((avenue, i) => <AvenueCard data={avenue} key={i}/>)}
     </div>
   );

@@ -11,7 +11,7 @@ const Dropdown = ({className, children}) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <DropdownContext.Provider value={{isOpen, setIsOpen}}>
-      <div className={['relative z-[100]',className].join(" ")}>
+      <div className={['relative z-10',className].join(" ")}>
         {children}
       </div>
     </DropdownContext.Provider>
@@ -39,7 +39,7 @@ Dropdown.Body = ({children, className}) => {
       leaveFrom="opacity-100 scale-100"
       leaveTo="opacity-0 scale-75"
     >
-      <div className={['absolute z-[9999] right-0 top-12 origin-top-right',className].join(" ")} ref={ddRef}>
+      <div className={['absolute z-[10] right-0 top-12 origin-top-right',className].join(" ")} ref={ddRef}>
         {children}
       </div>
     </Transition>
