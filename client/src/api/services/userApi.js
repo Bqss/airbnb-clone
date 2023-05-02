@@ -2,9 +2,9 @@ import axios from "axios";
 import { AxiosInstance } from "./axiosInstances";
 
 class UserApi {
-    static async login({userName, password}){
+    static async login({email, password}){
         const result = await AxiosInstance.post("auth/login",{
-            userName,
+            email,
             password
         });
         

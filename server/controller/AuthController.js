@@ -11,12 +11,12 @@ class AuthController {
     const { name, email, password } = req.body;
     const bcryptSalt = bcrypt.genSaltSync(10);
     try {
-      const userDoc = await UserModel.create({
+       await UserModel.create({
         name,
         email,
         password: bcrypt.hashSync(password, bcryptSalt),
       });
-      res.status(201).json(userDoc);
+      res.sendStatus(201);
     } catch (e) {
       res.status(500).json("server error");
     }
@@ -26,6 +26,7 @@ class AuthController {
     const { email, password } = req.body;
 
     const userDoc = await UserModel.findOne({ email });
+
     if (userDoc) {
       const passOk = bcrypt.compareSync(password, userDoc.password);
       if (passOk) {
@@ -34,7 +35,7 @@ class AuthController {
           env.JWT_SECRET
         );
         res
-          .cookie("ab_t", token, {
+          .cookie("airBnbClone_token", token, {
             maxAge: 1000 * 60 * 2,
             httpOnly: true,
           })

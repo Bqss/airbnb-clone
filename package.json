@@ -1,9 +1,14 @@
 {
   "dependencies": {
     "@headlessui/react": "^1.7.13",
+    "@hookform/resolvers": "^3.1.0",
     "query-string": "^8.1.0",
     "react-hook-form": "^7.43.9",
     "react-hot-toast": "^2.4.0",
-    "react-redux": "^8.0.5"
+    "react-redux": "^8.0.5",
+    "yup": "^1.1.1"
+  },
+  "devDependencies": {
+    "tailwind-scrollbar": "^3.0.0"
   }
 }

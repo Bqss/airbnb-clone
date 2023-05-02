@@ -1,11 +1,12 @@
 import { Transition } from "@headlessui/react";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 
-const WithFade = ({show, children}) => {
+const WithFade = ({show, children, unmount}) => {
   return (
     <Transition
       as={Fragment}
       show={show}
+      unmount={unmount}
       enter="transition-all duration-300 "
       leave="transition-all duration-300"
       enterFrom="opacity-0 "

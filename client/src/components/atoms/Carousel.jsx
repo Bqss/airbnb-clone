@@ -31,9 +31,9 @@ const Carousel = ({ children, total }) => {
         <div className="h-[20%] absolute w-full bg-gradient-to-t bottom-0 pointer-events-none  from-black/5  z-10 "></div>
         <div className="flex flex-col justify-between absolute inset-0 pointer-events-none">
           <div></div>
-          <WithFade show={onHover}>
+          <WithFade show={onHover} unmount={false}>
             <div className="flex px-2">
-              <WithFade show={active > 0}>
+              <WithFade show={active > 0} unmount={false}>
                 <button
                   onClick={prev}
                   className=" p-3 transition-transform duration-150 rounded-full pointer-events-auto bg-white hover:bg-white hover:scale-105"
@@ -42,7 +42,7 @@ const Carousel = ({ children, total }) => {
                 </button>
               </WithFade>
 
-              <WithFade show={active < total-1}>
+              <WithFade show={active < total-1} unmount={false}>
                 <button
                   onClick={next}
                   className=" p-3 transition-transform duration-150 rounded-full ml-auto   pointer-events-auto bg-white hover:bg-white hover:scale-105"

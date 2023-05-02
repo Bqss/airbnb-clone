@@ -4,22 +4,39 @@ import Input from "../atoms/Input";
 import LineWiwhCenteredText from "../atoms/LineWithCenteredText";
 import { useForm } from "react-hook-form";
 import Modal from "../Modal";
+import * as y from "yup";
+import {yupResolver} from "@hookform/resolvers/yup"
+import { useMutation } from "@tanstack/react-query";
+import UserApi from "../../api/services/userApi";
 
 const LoginModal = ({isOpen, onClose}) => {
+
+  const {mutate, isLoading} = useMutation({
+    mutationFn : UserApi.login
+  })
+  
+  const schema = y.object().shape({
+  
+    email : y.string().required("email tidak boleh kosong"),
+    password : y.string().required("password tidak boleh kosong")
+  })
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      username: "",
       email: "",
       password: "",
     },
+    resolver : yupResolver(schema),
     mode: "onSubmit",
   });
 
-  const handleRegister = (ev) => {};
+  const handleRegister = (v) => {
+    mutate({...v  })
+  };
+
 
   return (
     <Modal
@@ -64,6 +81,8 @@ const LoginModal = ({isOpen, onClose}) => {
                       value: true,
                       message: "Email can't be empty",
                     },
+                    
+
                   }}
                   name="email"
                   type="text"

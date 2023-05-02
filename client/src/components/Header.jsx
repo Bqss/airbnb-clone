@@ -60,7 +60,7 @@ export default function Header() {
               </button>
             </div>
           </div>
-          <div className="space-x-3 flex flex-1 basis-[144px] items-center justify-end text-sm">
+          <div className="space-x-3 flex flex-1 basis-[144px] flex-shrink-0 items-center justify-end text-sm">
             <div className="flex items-center">
               <Button
                 className="rounded-full text-sm text-slate-950 mt-1"
