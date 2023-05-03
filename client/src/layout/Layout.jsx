@@ -13,11 +13,22 @@ import {
 import { useDispatch } from "react-redux";
 import Container from "../components/atoms/Container";
 import Categories from "../components/organism/Categories";
+import { useEffect } from "react";
+import axios from "axios";
 
 export default function Layout() {
   const { openLoginModal, openRegisterModal, openAddAirBnbModal } = useSelector(
     (state) => state.modal
-  );
+  );  
+  
+  useEffect(()=>{
+    async function  d () {
+      const user = await axios.get("/api/auth/crntuser ");
+      console.log(user)
+    }
+
+    d();
+  },[])
   const dispatch = useDispatch();
   return (
     <>

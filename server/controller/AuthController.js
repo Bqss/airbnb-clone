@@ -49,6 +49,31 @@ class AuthController {
     }
   }
 
+  static async getCurrentUser ( req, res ) {
+    
+    const {airBnbClone_token} = req.cookies;
+
+    console.log(airBnbClone_token);
+
+    if(!airBnbClone_token) {
+        res.status(401).send({});
+    }
+
+    try {
+
+        try {
+            const decoded = jwt.verify(airBnbClone_token, env.JWT_SECRET);
+            res.send
+        } catch (error) {
+            res.status(401).send({});
+        }
+        const result = await UserModel.findById(userId);
+        res.status(200).send(result.data);
+    } catch (error) {
+        res.sendStatus(500);
+    }
+  }
+
   static async logout(req, res) {}
 }
 
