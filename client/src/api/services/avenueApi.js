@@ -9,13 +9,14 @@ class AvenueApi {
     alamat,
     harga,
     deskripsi,
+    ownerId,
     judul,
     fasilitas,
     infoDasar,
   }) {
     try {
       const result = await AxiosInstance.post(
-        "/avenue",
+        "/avenues",
         {
           kategori,
           alamat,
@@ -25,6 +26,7 @@ class AvenueApi {
           deskripsi,
           judul,
           fasilitas,
+          ownerId,
           infoDasar,
         },
         {
@@ -40,13 +42,14 @@ class AvenueApi {
     }
   }
 
-  static async getAllAvenue() {
-    try {
-        const result = await AxiosInstance.get("/avenue");
-        return result.data;
-    } catch (error) {
-        return err;
-    }
+  static async getAvenueById({ avenueId }) {
+    const result = await AxiosInstance.get(`/avenues/${avenueId}`);
+    return result.data.data;
+  }
+
+  static async getAvenue({ id }) {
+    const result = await AxiosInstance.get(`/avenues${id ? "/" + id : ""}`);
+    return result.data.data;
   }
 }
 

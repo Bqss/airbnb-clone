@@ -1,7 +1,7 @@
 import { Transition } from "@headlessui/react";
 import React, { Fragment, createContext, useContext, useState } from "react";
 import { GrPrevious, GrNext } from "react-icons/gr";
-import WithFade from "../WithFade";
+import WithFade from "../../components/templates/WithFade";
 
 const CarouselContext = createContext({
   active: 0,
@@ -36,7 +36,7 @@ const Carousel = ({ children, total }) => {
               <WithFade show={active > 0} unmount={false}>
                 <button
                   onClick={prev}
-                  className=" p-3 transition-transform duration-150 rounded-full pointer-events-auto bg-white hover:bg-white hover:scale-105"
+                  className=" p-2 transition-transform duration-150 rounded-full pointer-events-auto bg-white hover:bg-white hover:scale-105"
                 >
                   <GrPrevious className="w-3 h-3" />
                 </button>
@@ -45,7 +45,7 @@ const Carousel = ({ children, total }) => {
               <WithFade show={active < total-1} unmount={false}>
                 <button
                   onClick={next}
-                  className=" p-3 transition-transform duration-150 rounded-full ml-auto   pointer-events-auto bg-white hover:bg-white hover:scale-105"
+                  className=" p-2 transition-transform duration-150 rounded-full ml-auto   pointer-events-auto bg-white hover:bg-white hover:scale-105"
                 >
                   <GrNext className="w-3 h-3" />
                 </button>

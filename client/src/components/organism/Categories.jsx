@@ -10,7 +10,7 @@ import { useMemo } from "react";
 import Container from "../atoms/Container";
 import queryString from "query-string";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import WithFade from "../WithFade";
+import WithFade from "./../templates/WithFade";
 
 const Categories = () => {
   const { pathname } = useLocation();

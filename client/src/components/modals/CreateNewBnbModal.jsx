@@ -4,16 +4,17 @@ import { HiXMark, HiOutlineHome } from "react-icons/hi2";
 import Tabs from "../Tabs";
 import Button from "../atoms/Button";
 import RadioButton from "../atoms/RadioButton";
-import { desc, fasility } from "../../data";
+import { desc, fasility, type } from "../../data";
 import { GrRestroomMen } from "react-icons/gr";
 import { IoPeopleSharp } from "react-icons/io5";
+import { useSelector } from "react-redux";
 import Stepper from "../atoms/Stepper";
 import toaster from "react-hot-toast";
 import CheckBox from "../atoms/CheckBox";
 import ImageUpload from "../atoms/MainImageUpload";
 import TextArea from "../atoms/TextArea";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
-import {useMutation} from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import GetLocation from "../molecules/GetLocation";
 import AvenueApi from "../../api/services/avenueApi";
 
@@ -30,13 +31,14 @@ const STEPS = {
 };
 
 const CreateNewBnbModal = ({ isOpen, onClose }) => {
+  const { mutate, isLoading } = useMutation({
+    mutationFn: AvenueApi.newAvenue,
+  });
 
-  const { mutate ,isLoading } = useMutation({
-    mutationFn : AvenueApi.newAvenue,
-  })
+  const { value } = useSelector((state) => state.user);
 
   const [currentStep, setCurrentStep] = useState(STEPS.CATEGORY);
-  const [category, setCategory] = useState("")
+  const [category, setCategory] = useState("");
   const [tipeRumah, setTipeRumah] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [images, setImages] = useState([]);
@@ -44,7 +46,11 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
-  const [fasilitas, setFasilitas] = useState(fasility.map(e => ({[e.value] :  false})).reduce((p,c) => ({...p,...c}),{}));
+  const [fasilitas, setFasilitas] = useState(
+    fasility
+      .map((e) => ({ [e.value]: false }))
+      .reduce((p, c) => ({ ...p, ...c }), {})
+  );
   const [infoDasar, setInfoDasar] = useState({
     tamu: 1,
     kamar: 1,
@@ -104,43 +110,54 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
     currentStep,
   ]);
 
-  const next = () => {
-    if(currentStep == STEPS.PRICE){
+  console.log(value.id);
 
-      mutate({
-        alamat : lokasi,
-        available : tipeRumah,
-        deskripsi : description,
-        fasilitas,
-        foto: images.map(img => ({url: img.uploadedImage.url, name: img.uploadedImage.original_filename})),
-        harga : parseInt(price.slice(3)),
-        infoDasar,
-        judul : title,
-        kategori: category,
-        tag : category
-      },{
-        
-        onSuccess(data){
-          setCurrentStep(STEPS.CATEGORY);
-          setCategory("");
-          setIsValid(false);
-          setImages([]);
-          setLokasi([])
-          setPrice("");
-          setDescription("")
-          setTitle("")
-          setFasilitas(fasility.map(e => ({[e.value] :  false})).reduce((p,c) => ({...p,...c}),{}))
-          setInfoDasar({
-            tamu : 1,
-            kamar : 1,
-            tempatTidur : 1,
-            kamarMandi: 1
-          });
-          toaster("success creating new bnb");
-          onClose();
+  const next = () => {
+    if (currentStep == STEPS.PRICE) {
+      mutate(
+        {
+          alamat: lokasi,
+          available: tipeRumah,
+          deskripsi: description,
+          fasilitas,
+          foto: images.map((img) => ({
+            url: img.uploadedImage.url,
+            name: img.uploadedImage.original_filename,
+          })),
+          harga: parseInt(price.slice(3)),
+          ownerId: value?.id,
+          infoDasar,
+          judul: title,
+          kategori: category,
+          tag: category,
+        },
+        {
+          onSuccess(data) {
+            setCurrentStep(STEPS.CATEGORY);
+            setCategory("");
+            setIsValid(false);
+            setImages([]);
+            setLokasi([]);
+            setPrice("");
+            setDescription("");
+            setTitle("");
+            setFasilitas(
+              fasility
+                .map((e) => ({ [e.value]: false }))
+                .reduce((p, c) => ({ ...p, ...c }), {})
+            );
+            setInfoDasar({
+              tamu: 1,
+              kamar: 1,
+              tempatTidur: 1,
+              kamarMandi: 1,
+            });
+            toaster("success creating new bnb");
+            onClose();
+          },
         }
-      })
-      return ;
+      );
+      return;
     }
     setCurrentStep((e) => e + 1);
   };
@@ -152,8 +169,8 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
   const increment = () => {
     setPrice((e) => {
       const crr = e.slice(3);
-      if(crr!=""){
-        return `Rp.${(parseInt(crr) + 1000)}`
+      if (crr != "") {
+        return `Rp.${parseInt(crr) + 1000}`;
       }
       return e;
     });
@@ -162,8 +179,8 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
   const decrement = () => {
     setPrice((e) => {
       const crr = e.slice(3);
-      if(crr!="" && parseInt(crr)>=1000){
-        return `Rp.${(parseInt(crr) - 1000)}`
+      if (crr != "" && parseInt(crr) >= 1000) {
+        return `Rp.${parseInt(crr) - 1000}`;
       }
       return e;
     });
@@ -182,12 +199,11 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
     });
   };
 
-
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      closeOnClickOutside ={false}
+      closeOnClickOutside={false}
       transition={{
         enter: "transition-all  duration-500",
         enterFrom: "opacity-0 translate-y-full",
@@ -203,7 +219,10 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
         }
       >
         <div className="flex py-5 border-b px-6 ">
-          <button className="bg-white mr-auto bg-transparent p-1 rounded-lg" onClick={onClose}>
+          <button
+            className="bg-white mr-auto bg-transparent p-1 rounded-lg"
+            onClick={onClose}
+          >
             <HiXMark className="w-5 h-5" />
           </button>
           <span className="mr-auto font-bold text-lg">Air Bnb Your Home</span>
@@ -245,54 +264,25 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                     Pilih tipe ruangan yang bisa digunakan oleh tamu
                   </span>
                   <div className="flex flex-col gap-3 mt-8 ">
-                    <RadioButton
-                      value={"seluruhrumah"}
-                      className="p-5 flex rounded-xl justify-between items-center"
-                      name="tipe"
-                      selected={tipeRumah == "seluruhrumah"}
-                      setSelected={setTipeRumah}
-                    >
-                      <div className="space-y-1">
-                        <h3 className="font-medium text-xl">Seluruh rumah</h3>
-                        <p className="text-gray-400">
-                          Tamu bisa menggunakan seluruh tempat
-                        </p>
-                      </div>
-                      <HiOutlineHome className="w-10 h-10" />
-                    </RadioButton>
-                    <RadioButton
-                      value={"kamarpribadi"}
-                      className="p-6 flex justify-between items-center"
-                      name="tipe"
-                      selected={tipeRumah == "kamarpribadi"}
-                      setSelected={setTipeRumah}
-                    >
-                      <div className="space-y-1">
-                        <h3 className="font-medium text-xl">Kamar pribadi</h3>
-                        <p className="text-gray-400">
-                          Tamu akan tidur di kamar pribadi, namun sebagian area
-                          mungkin akan digunakan anda atau orang lain
-                        </p>
-                      </div>
-                      <GrRestroomMen className="w-10 h-10 flex-shrink-0" />
-                    </RadioButton>
-                    <RadioButton
-                      value={"kamarbersama"}
-                      className="p-6 flex justify-between items-center"
-                      name="tipe"
-                      selected={tipeRumah == "kamarbersama"}
-                      setSelected={setTipeRumah}
-                    >
-                      <div className="space-y-1">
-                        <h3 className="font-medium text-xl">Kamar bersama</h3>
-                        <p className="text-gray-400">
-                          Tamu akan tidur di salah satu kamar atau area umum
-                          yang mungkin akan digunakan bersama anda atau orang
-                          lain
-                        </p>
-                      </div>
-                      <IoPeopleSharp className="w-10 h-10 flex flex-shrink-0" />
-                    </RadioButton>
+                    {type.map((t, i) => {
+                      return (
+                        <RadioButton
+                          value={t.value}
+                          className="p-5 flex rounded-xl justify-between items-center"
+                          name="tipe"
+                          selected={tipeRumah == t.value}
+                          setSelected={setTipeRumah}
+                          key={i}
+                        >
+                          <div className="space-y-1">
+                            <h3 className="font-medium text-xl">{t.label}</h3>
+                            <p className="text-gray-400">{t.description}</p>
+                          </div>
+                          <t.icon className="w-10 h-10"/>
+                        </RadioButton>
+                      );
+                    })}
+                    
                   </div>
                 </div>
               </Tabs.Panel>
@@ -364,7 +354,13 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                   </p>
                   <div className="grid mt-8 grid-cols-3 gap-3">
                     {fasility.map((e, i) => (
-                      <CheckBox value={e.value} key={i} name={e.value} selected={fasilitas[e.value]??false} setSelected={setFasilitas}>
+                      <CheckBox
+                        value={e.value}
+                        key={i}
+                        name={e.value}
+                        selected={fasilitas[e.value] ?? false}
+                        setSelected={setFasilitas}
+                      >
                         <e.icon className="w-8 h-8 flex flex-shrink-0" />
                         <h3 className="mt-3">{e.label}</h3>
                       </CheckBox>
@@ -438,7 +434,10 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                   </p>
                   <div className="mt-8 ">
                     <div className="p-8 rounded-xl flex items-center gap-3 bg-gray-100">
-                      <button className="p-4 rounded-full  bg-white border border-gray-300 hover:border-black" onClick={decrement}>
+                      <button
+                        className="p-4 rounded-full  bg-white border border-gray-300 hover:border-black"
+                        onClick={decrement}
+                      >
                         <AiOutlineMinus className="w-4 h-4" />
                       </button>
                       <input
@@ -451,7 +450,10 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                         value={price}
                       />
 
-                      <button className="p-4 rounded-full  bg-white border border-gray-300 hover:border-black" onClick={increment}>
+                      <button
+                        className="p-4 rounded-full  bg-white border border-gray-300 hover:border-black"
+                        onClick={increment}
+                      >
                         <AiOutlinePlus className="w-4 h-4" />
                       </button>
                     </div>
@@ -465,7 +467,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
           proggress={currentStep / STEPS.PRICE}
           isValid={isValid}
           prev={prev}
-          isUploading = {isLoading}
+          isUploading={isLoading}
           next={next}
         />
       </Modal.Body>

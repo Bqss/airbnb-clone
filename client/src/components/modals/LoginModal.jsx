@@ -3,40 +3,51 @@ import { HiXMark } from "react-icons/hi2";
 import Input from "../atoms/Input";
 import LineWiwhCenteredText from "../atoms/LineWithCenteredText";
 import { useForm } from "react-hook-form";
+
 import Modal from "../Modal";
 import * as y from "yup";
-import {yupResolver} from "@hookform/resolvers/yup"
-import { useMutation } from "@tanstack/react-query";
+import Button from "../atoms/Button";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import UserApi from "../../api/services/userApi";
+import toast from "react-hot-toast";
 
-const LoginModal = ({isOpen, onClose}) => {
-
-  const {mutate, isLoading} = useMutation({
-    mutationFn : UserApi.login
-  })
-  
+const LoginModal = ({ isOpen, onClose }) => {
+  const { mutate, isLoading } = useMutation({
+    mutationFn: UserApi.login,
+  });
+  const queryClient = useQueryClient();
   const schema = y.object().shape({
-  
-    email : y.string().required("email tidak boleh kosong"),
-    password : y.string().required("password tidak boleh kosong")
-  })
+    email: y.string().required("email tidak boleh kosong"),
+    password: y.string().required("password tidak boleh kosong"),
+  });
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
       email: "",
       password: "",
     },
-    resolver : yupResolver(schema),
+    resolver: yupResolver(schema),
     mode: "onSubmit",
   });
 
-  const handleRegister = (v) => {
-    mutate({...v  })
+  const handleLogin = (v) => {
+    mutate(
+      { ...v },
+      {
+        onSuccess: () => {
+          toast.success("Berhasil login");
+          onClose();
+          reset();
+          queryClient.invalidateQueries("[currentUser]");
+        },
+      }
+    );
   };
-
 
   return (
     <Modal
@@ -63,13 +74,14 @@ const LoginModal = ({isOpen, onClose}) => {
             <span className="mr-auto font-bold text-lg">Login</span>
           </div>
           <div className=" px-6">
-            <p className="text-xl font-medium mt-10 ">Selamat datang di Airbnb</p>
+            <p className="text-xl font-medium mt-10 ">
+              Selamat datang di Airbnb
+            </p>
             <form
               action=""
               className="space-y-3 mt-6"
-              onSubmit={handleSubmit(handleRegister)}
+              onSubmit={handleSubmit(handleLogin)}
             >
- 
               <div>
                 <Input
                   register={register}
@@ -81,8 +93,6 @@ const LoginModal = ({isOpen, onClose}) => {
                       value: true,
                       message: "Email can't be empty",
                     },
-                    
-
                   }}
                   name="email"
                   type="text"
@@ -118,9 +128,14 @@ const LoginModal = ({isOpen, onClose}) => {
                 Kami akan menelpon atau mengirim SMS guna mengonfirmasikan nomor
                 anda. Tarif standar SMS dan data berlaku
               </p>
-              <button className="w-full py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-medium">
+              <Button
+                isLoading={isLoading}
+                className={
+                  "w-full py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-medium"
+                }
+              >
                 <span>Lanjutkan</span>
-              </button>
+              </Button>
             </form>
           </div>
           <LineWiwhCenteredText>atau</LineWiwhCenteredText>

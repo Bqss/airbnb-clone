@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import Button from "./atoms/Button";
 import Container from "./atoms/Container";
 
-export default function Header() {
+export default function Header({ userData }) {
   const dispatch = useDispatch();
 
   return (
@@ -17,10 +17,7 @@ export default function Header() {
       <Container className={""}>
         <header className="p-4  bg-white flex  items-center justify-between  ">
           <div className="flex-1 basis-[144px] flex-shrink-0">
-            <Link
-              to={"/"}
-              className="flex  items-center gap-2 "
-            >
+            <Link to={"/"} className="flex  items-center gap-2 ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -64,7 +61,7 @@ export default function Header() {
             <div className="flex items-center">
               <Button
                 className="rounded-full text-sm text-slate-950 mt-1"
-                onClick={() => dispatch(toggleOpenAddAirbnbModal())}
+                onClick={userData?.id ? () => dispatch(toggleOpenAddAirbnbModal()) : () => dispatch(toggleOpenLoginModal())}
               >
                 Jadikan Rumah Anda AirBnb
               </Button>
@@ -121,20 +118,58 @@ export default function Header() {
                   </svg>
                 </div>
               </Dropdown.Button>
-              {/* {!!user && <div>{user.name}</div>} */}
               <Dropdown.Body
                 className={
                   "p-1 bg-white flex flex-col border-2 border-gray-200  rounded-lg  shadow-md w-[40vw] max-w-[13rem]"
                 }
               >
-                <Dropdown.Item onClick={() => dispatch(toggleOpenLoginModal())}>
-                  Masuk
-                </Dropdown.Item>
-                <Dropdown.Item
-                  onClick={() => dispatch(toggleOpenRegisterModal())}
-                >
-                  Daftar
-                </Dropdown.Item>
+                {userData?.id ? (
+                  <>
+                    <Dropdown.Item
+                      onClick={() => dispatch(toggleOpenRegisterModal())}
+                    >
+                      My Trips
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => dispatch(toggleOpenRegisterModal())}
+                    >
+                      My Favourites
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => dispatch(toggleOpenRegisterModal())}
+                    >
+                      My Reservations
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => dispatch(toggleOpenRegisterModal())}
+                    >
+                      My Properties
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => dispatch(toggleOpenAddAirbnbModal())}
+                    >
+                      AirBnb My Home
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => dispatch(toggleOpenRegisterModal())}
+                    >
+                      Logout
+                    </Dropdown.Item>
+                  </>
+                ) : (
+                  <>
+                    <Dropdown.Item
+                      onClick={() => dispatch(toggleOpenLoginModal())}
+                    >
+                      Masuk
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => dispatch(toggleOpenRegisterModal())}
+                    >
+                      Daftar
+                    </Dropdown.Item>
+                  </>
+                )}
               </Dropdown.Body>
             </Dropdown>
           </div>

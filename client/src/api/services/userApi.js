@@ -11,9 +11,9 @@ class UserApi {
         return result.data;
     }
 
-    static async register({userName, email, password}){
+    static async register({username, email, password}){
        const result = await AxiosInstance.post("auth/register",{
-            userName,
+            username,
             email,
             password
         });
@@ -23,6 +23,11 @@ class UserApi {
     static async getUserById({id}){
         const result = await AxiosInstance.get(`auth/user/${id}`);
         return result.data;
+    }
+
+    static async getCurrentUser(){
+        const user = await AxiosInstance.get("auth/user/me");
+        return user.data;
     }
 }
 

@@ -1,19 +1,15 @@
 import React from "react";
 import Carousel from "../atoms/Carousel";
 import { Link } from "react-router-dom";
+import Image from "../atoms/Image";
 
 const AvenueCard = ({ data }) => {
   return (
-    <Link className="block relative overflow-hidden rounded-lg " to={`/${data.judul}`}>
+    <Link className="block relative overflow-hidden rounded-lg " to={`/rooms/${data._id}`}>
       <Carousel total={data.foto.length}>
         {data.foto.map((foto, i) => (
           <Carousel.Panel i={i} key={i}>
-            <img
-              className="w-full h-full object-scale-down"
-              src={foto.url}
-              alt={foto.name}
-              key={i}
-            />
+            <Image src={foto.url} alt={foto.name} key={i}/>
           </Carousel.Panel>
         ))}
       </Carousel>

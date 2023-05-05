@@ -7,8 +7,8 @@ const WithFade = ({show, children, unmount}) => {
       as={Fragment}
       show={show}
       unmount={unmount}
-      enter="transition-all duration-300 "
-      leave="transition-all duration-300"
+      enter="transition-all duration-200"
+      leave="transition-all duration-200"
       enterFrom="opacity-0 "
       enterTo="opacity-100"
       leaveFrom="opacity-100"

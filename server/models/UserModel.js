@@ -2,14 +2,20 @@ import {Schema, model} from "mongoose";
 import { avenueSchema } from "./AvenueModel.js";
 
 
-const UserSchema = new Schema({
-  name: {
+export const UserSchema = new Schema({
+  username: {
     type : String,
     required: true
   },
-  email: { type: String, unique: true },
-  password: String,
-  profilePicture : String,
+  email: { type: String, unique: true , required: true},
+  password: {
+    type : String,
+    required: true
+  },
+  profilePicture : {
+    type : String,
+    default : ""
+  },
   createdAt : {
     type : Date,
     default : new Date().toLocaleString()
@@ -20,7 +26,7 @@ const UserSchema = new Schema({
     default: []
   },
 
-  favouriteAvenues: [String]
+  favouriteAvenues: [String],
 
 });
 

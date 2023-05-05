@@ -1,5 +1,8 @@
 import {Router} from "express";
+import UserController from "./../controller/UserController.js";
 
-export const userRouter = Router();
+export const userRoute = Router();
 
-userRouter.get(`/:id`)
+userRoute.get(`/:id`, UserController.getUserById)
+userRoute.delete(`/:id`, UserController.deleteUser)
+userRoute.get(`/`, UserController.getAllUser)

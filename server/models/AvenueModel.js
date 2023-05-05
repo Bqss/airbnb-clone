@@ -1,5 +1,6 @@
 import {Schema, model} from "mongoose";
 
+
 export const avenueSchema = Schema({
     kategori: {
         type: String,
@@ -46,9 +47,18 @@ export const avenueSchema = Schema({
         url: String,
         name: String
     }],
+    ownerId: {
+        type: String,
+        required: true
+    },
     judul: String,
     deskripsi: String,
-    harga: Number 
+    harga: Number ,
+    createdAt: {
+        type: Date,
+        default: new Date()
+    },
+    updatedAt: Date
 });
 
 export default model("avenue",avenueSchema);

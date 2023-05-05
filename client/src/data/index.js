@@ -1,16 +1,14 @@
 import {FaFireExtinguisher, FaSwimmingPool} from "react-icons/fa"
 import { GiWindmill, GiModernCity, GiVillage, GiAntarctica, GiIsland, GiFireplace, GiGrandPiano } from "react-icons/gi";
 import { TbAirConditioning, TbBeach, TbPool } from "react-icons/tb";
-import {HiOutlineHomeModern} from "react-icons/hi2"
+import {HiOutlineHomeModern, HiOutlineHome} from "react-icons/hi2"
 import {CgTrees} from "react-icons/cg"
 import {GrRestroomMen} from "react-icons/gr"
-import {IoBarbellOutline, IoHomeOutline} from "react-icons/io5"
+import {IoBarbellOutline, IoHomeOutline,IoPeopleSharp} from "react-icons/io5"
 import {TfiGame, TfiHome} from "react-icons/tfi"
 import {MdHotel, MdSoupKitchen} from "react-icons/md";
 import {BiAccessibility, BiBath} from "react-icons/bi"
 import { AiOutlineCar, AiOutlineDesktop, AiOutlineMedicineBox, AiOutlineWifi } from "react-icons/ai";
-import {BsTv} from "react-icons/bs"
-
 
 
 
@@ -105,6 +103,31 @@ const desc = [
         value : "aksebilitas",
         icon : BiAccessibility
     }
+]
+
+
+export const type = [
+    {
+        id: "1",
+        label: "Seluruh Rumah",
+        value : "seluruhrumah",
+        description : "Tamu bisa menggunakan seluruh tempat ",
+        icon: HiOutlineHome
+    },
+    {
+        id: "2",
+        label: "Kamar Pribadi",
+        value : "kamarpribadi",
+        description : "Tamu akan tidur di kamar pribadi, namun sebagian area mungkin akan digunakan anda atau orang lain",
+        icon: GrRestroomMen
+    },
+    {
+        id: "3",
+        label: "Kamar Bersama",
+        value : "kamarbersama",
+        description : "Tamu akan tidur di salah satu kamar atau area umum yang mungkin akan digunakan bersama anda atau orang lain",
+        icon: IoPeopleSharp
+    },
 ]
 
 

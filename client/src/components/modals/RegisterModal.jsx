@@ -42,11 +42,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
   });
 
   const handleRegister = (v) => {
-    mutate({...v},{
-      onSuccess(data){
-        console.log(data)
-      }
-    })
+    mutate({...v})
   };
 
   return (
