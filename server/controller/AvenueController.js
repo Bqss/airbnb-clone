@@ -113,6 +113,7 @@ class AvenueController {
       res.sendStatus(500);
     }
   }
+
 }
 
 export default AvenueController;

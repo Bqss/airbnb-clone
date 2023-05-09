@@ -1,12 +1,10 @@
-import React, { Fragment, memo, useEffect, useMemo, useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import Modal from "../Modal";
-import { HiXMark, HiOutlineHome } from "react-icons/hi2";
+import { HiXMark} from "react-icons/hi2";
 import Tabs from "../Tabs";
 import Button from "../atoms/Button";
 import RadioButton from "../atoms/RadioButton";
 import { desc, fasility, type } from "../../data";
-import { GrRestroomMen } from "react-icons/gr";
-import { IoPeopleSharp } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import Stepper from "../atoms/Stepper";
 import toaster from "react-hot-toast";
@@ -109,8 +107,6 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
     price,
     currentStep,
   ]);
-
-  console.log(value.id);
 
   const next = () => {
     if (currentStep == STEPS.PRICE) {

@@ -1,4 +1,5 @@
 import {Schema, model} from "mongoose";
+import { reservationSchema } from "./ReservationModel.js";
 
 
 export const avenueSchema = Schema({
@@ -54,6 +55,10 @@ export const avenueSchema = Schema({
     judul: String,
     deskripsi: String,
     harga: Number ,
+    reservations : {
+        type : [reservationSchema],
+        default : []
+    },
     createdAt: {
         type: Date,
         default: new Date()

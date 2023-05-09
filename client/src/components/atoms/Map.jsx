@@ -7,7 +7,7 @@ import {
   useMapEvents,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-const center = [-7, 112];
+
 
 const LocationMarker = ({ setLokasi, lokasi }) => {
 
@@ -43,13 +43,15 @@ const LocationMarker = ({ setLokasi, lokasi }) => {
   )
 };
 
-const Map = forwardRef(({ setLokasi, lokasi }, ref) => {
+const Map = forwardRef(({ setLokasi, lokasi, zoom, center, disabled = false}, ref) => {
   return (
     <MapContainer
       fadeAnimation={true}
       ref={ref}
-      zoom={4}
-      center={center}
+      dragging ={!disabled }
+      scrollWheelZoom= {!disabled}
+      zoom={zoom ??4}
+      center={center ?? [-7, 112] }
       className="relative w-full h-full"
     >
       <TileLayer
