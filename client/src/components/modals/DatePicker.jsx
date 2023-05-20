@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { DateRange } from "react-date-range";
 import WithFade from "./../templates/WithFade";
-import { HiXMark } from "react-icons/hi2";
 import useClickOutside from "../../hooks/useClickOutside";
 
 const DatePicker = ({
@@ -10,7 +9,7 @@ const DatePicker = ({
   onChange,
   ranges,
   onReset,
-  disabledDates,
+  disabledDates =[],
   ...d
 }) => {
   const ref = useClickOutside(onClose);
@@ -53,8 +52,10 @@ const DatePicker = ({
               editableDateInputs={true}
               ranges={ranges}
               showDateDisplay={false}
+              minDate={new Date()}
               onChange={onChange}
               months={2}
+              disabledDates={disabledDates}
               direction="horizontal"
             />
           </div>

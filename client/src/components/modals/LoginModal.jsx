@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { HiXMark } from "react-icons/hi2";
-import Input from "../atoms/Input";
-import LineWiwhCenteredText from "../atoms/LineWithCenteredText";
+import {Input, Button, LineWithCenteredText} from "/src/components/atoms";
 import { useForm } from "react-hook-form";
-
-import Modal from "../Modal";
+import {Modal} from "/src/components/molecules";
 import * as y from "yup";
-import Button from "../atoms/Button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import UserApi from "../../api/services/userApi";
@@ -138,7 +135,7 @@ const LoginModal = ({ isOpen, onClose }) => {
               </Button>
             </form>
           </div>
-          <LineWiwhCenteredText>atau</LineWiwhCenteredText>
+          <LineWithCenteredText>atau</LineWithCenteredText>
           <div className="flex flex-col gap-2 px-6">
             <button className="w-full py-3 px-6 rounded-lg border-2 border-black bg-white ">
               Lanjutkan dengan Google

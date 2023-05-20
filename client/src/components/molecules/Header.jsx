@@ -1,16 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useNavigation } from "react-router-dom";
 import {
   toggleOpenAddAirbnbModal,
   toggleOpenLoginModal,
   toggleOpenRegisterModal,
-} from "../fitures/modalSlice";
+} from "../../fitures/modalSlice";
 import Dropdown from "./Dropdown";
 import { useDispatch } from "react-redux";
-import Button from "./atoms/Button";
-import Container from "./atoms/Container";
+import Button from "../atoms/Button";
+import Container from "../atoms/Container";
 
 export default function Header({ userData }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   return (
     <div className="border-b border-slate-200">
@@ -125,23 +126,21 @@ export default function Header({ userData }) {
               >
                 {userData?.id ? (
                   <>
-                    <Dropdown.Item
-                      onClick={() => dispatch(toggleOpenRegisterModal())}
-                    >
+                    <Dropdown.Item onClick={() => navigate("/my-trips")}>
                       My Trips
                     </Dropdown.Item>
                     <Dropdown.Item
-                      onClick={() => dispatch(toggleOpenRegisterModal())}
+                      onClick={() => navigate("/my-favourites")}
                     >
                       My Favourites
                     </Dropdown.Item>
                     <Dropdown.Item
-                      onClick={() => dispatch(toggleOpenRegisterModal())}
+                      onClick={() => navigate("/my-reservations")}
                     >
                       My Reservations
                     </Dropdown.Item>
                     <Dropdown.Item
-                      onClick={() => dispatch(toggleOpenRegisterModal())}
+                      onClick={() => navigate("/my-properties")}
                     >
                       My Properties
                     </Dropdown.Item>

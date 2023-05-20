@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import Header from "../components/Header";
+import Header from "../components/molecules/Header";
 import { Toaster, toast } from "react-hot-toast";
 import LoginModal from "./../components/modals/LoginModal";
 import RegisterModal from "./../components/modals/RegisterModal";

@@ -1,9 +1,8 @@
 import React from "react";
-import Modal from "./../Modal";
+import Modal from "../molecules/Modal";
 import { GrFormPrevious } from "react-icons/gr";
-import Button from "./../atoms/Button";
-import Image from "../atoms/Image";
-import Container from "../atoms/Container";
+import {Image, Container} from "/src/components/atoms";
+
 
 const ImagesGallery = ({ open, onClose, images }) => {
   return (

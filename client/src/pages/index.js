@@ -1,0 +1,6 @@
+export {default as IndexPage} from "./IndexPage"
+export {default as DetailedAvenuePage} from "./DetailedAvenuePage"
+export {default as FavouritesPage} from "./FavouritesPage"
+export {default as PropertiesPage} from "./PropertiesPage"
+export {default as ReservationsPage} from "./ReservationsPage"
+export {default as TripsPage} from "./TripsPage"

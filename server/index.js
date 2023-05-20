@@ -8,6 +8,7 @@ import dotenv  from "dotenv";
 import { mediaRoute } from "./routes/MediaRoute.js";
 import { avenueRoute } from "./routes/AvenueRoute.js";
 import { userRoute } from "./routes/UserRoute.js";
+import reservationRoute from "./routes/ReservationRoute.js";
 
 dotenv.config();
 const app = express();
@@ -36,7 +37,8 @@ app.use(
 app.use("/api/auth",authRoute);
 app.use("/api/media",mediaRoute);
 app.use("/api/avenues",avenueRoute);
-app.use('/api/user',userRoute)
+app.use('/api/user',userRoute);
+app.use("/api/reservations",reservationRoute)
 
 
 

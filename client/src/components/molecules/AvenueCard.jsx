@@ -1,7 +1,6 @@
 import React from "react";
-import Carousel from "../atoms/Carousel";
 import { Link } from "react-router-dom";
-import Image from "../atoms/Image";
+import {Image, Carousel} from "/src/components/atoms";
 
 const AvenueCard = ({ data }) => {
   return (

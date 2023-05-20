@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import AvenueCard from "../components/molecules/AvenueCard";
+import {AvenueCard} from "/src/components/molecules";
 import AvenueApi from "../api/services/avenueApi";
-import Container from "../components/atoms/Container";
+import {Container} from "/src/components/atoms";
 
 export default function IndexPage() {
   const { data, isLoading, isFetching } = useQuery({

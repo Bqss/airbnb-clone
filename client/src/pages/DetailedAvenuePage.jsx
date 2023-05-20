@@ -1,33 +1,32 @@
-import React, { useMemo, useState } from "react";
-import Container from "../components/atoms/Container";
+import React, { useCallback, useMemo, useState } from "react";
+import {Container, Map, Image, Box, UpperlinedDiv, Button} from "/src/components/atoms";
 import { Link, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQueries } from "@tanstack/react-query";
 import AvenueApi from "../api/services/avenueApi";
 import { type as tipe, fasility } from "./../data/index";
-import Map from "../components/atoms/Map";
-import { addDays, differenceInDays } from "date-fns";
-import Image from "../components/atoms/Image";
-import Box from "./../components/atoms/Box";
+import { addDays,  differenceInDays, eachDayOfInterval } from "date-fns";
+import ReservationApi from "./../api/services/reservationApi";
 import { IoMdPeople } from "react-icons/io";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+import toaster from "react-hot-toast"
 import { FaBed } from "react-icons/fa";
 import { BiBed } from "react-icons/bi";
 import { MdBathtub } from "react-icons/md";
 import { CgMenuGridO } from "react-icons/cg";
-import UpperlinedDiv from "../components/atoms/UpperlinedDiv";
-import ImagesGallery from "../components/modals/ImagesGallery";
-import Button from "../components/atoms/Button";
-import DatePicker from "../components/modals/DatePicker";
+import {ImagesGallery, DatePicker} from "/src/components/modals";
+import { useSelector } from "react-redux";
 
 const DetailedAvenuePage = () => {
   const { id } = useParams();
-  const { isFetching, isLoading, data } = useQuery({
-    queryFn: () => AvenueApi.getAvenue({ id }),
-    queryKey: ["avenue", id],
-    enabled: Boolean(id),
-    initialData: {},
+
+  const userCrediental = useSelector(state => state.user );
+  const [isOpenGallery, setIsOpenGallery] = useState(false);
+  const [isOpenDatePick, setIsOpenDatePick] = useState(false);
+  const {isLoading : isCreatingReservation , mutate: createReservation} = useMutation({
+    mutationFn : ReservationApi.newReservation,
   });
+
   const [date, setDate] = useState([
     {
       startDate: new Date(),
@@ -36,13 +35,67 @@ const DetailedAvenuePage = () => {
     },
   ]);
 
-  const jumlahMalam = useMemo(
-    () => differenceInDays(date[0].endDate, date[0].startDate),
+  const preloadData = useQueries({
+    queries : [{
+      queryFn : () => AvenueApi.getAvenue({id}),
+      enabled : Boolean(id),
+      queryKey : ["avenue", id],
+      initialData : {}
+    }
+    ,{
+      queryFn : () => ReservationApi.getReservationsById({reservationID : id}),
+      enabled : Boolean(id),
+      queryKey : ["reservation", id],
+      initialData : []
+    }]
+  });
+
+  const avenueDetail = preloadData[0];
+  const avenueReservations =preloadData[1];
+
+
+  const disabledDates = useMemo(() => {
+    let dates = [];
+    const mainRange = [new Date().getTime(), addDays(new Date(), 90).getTime()];
+    const gap = [];
+
+    avenueReservations.data.forEach(reservation => {
+      const range = eachDayOfInterval({
+        start : new Date(reservation.startDate),
+        end: new Date(reservation.endDate)
+      });
+      dates = [...dates,...range];
+    });
+
+    const ranges = avenueReservations.data.map(reservation => {
+      return [new Date(reservation.startDate).getTime(), new Date(reservation.endDate).getTime()];
+    }).sort(([a,],[b,]) => a - b);
+
+    let [min, max] = mainRange;
+    for(const [start, end] of ranges){
+      if(min > max) break;
+      if(min < start) {
+        gap.push([min, addDays(start,-1).getTime()]);
+      }
+      min=  addDays(end, 1).getTime();
+    }
+    // end of range
+    if(min <= max) gap.push([min, addDays(min,5).getTime()]);
+    
+    const result =gap.filter(([a,b]) => differenceInDays(b,a) >= 5);
+
+    setDate([{
+      key: "selection",
+      startDate : new Date(result[0][0]),
+      endDate : new Date(result[0][1]),
+    }])
+    return dates;
+
+  } ,[avenueReservations.data]);
+  
+  const jumlahMalam = useMemo(() => differenceInDays(date[0].endDate, date[0].startDate),
     [date]
   );
-
-  const [isOpenGallery, setIsOpenGallery] = useState(false);
-  const [isOpenDatePick, setIsOpenDatePick] = useState(false);
 
   const {
     foto,
@@ -55,11 +108,12 @@ const DetailedAvenuePage = () => {
     informasiDasar,
     ownerUsername,
     ownerProfilePicture,
-  } = useMemo(() => data, [data]);
+  } = avenueDetail.data;
+
 
   const type = useMemo(
     () => [...tipe].filter((e) => e.value === available)[0],
-    [data]
+    [avenueDetail.data]
   );
   const fasilities = useMemo(() => {
     const filtered =
@@ -72,17 +126,39 @@ const DetailedAvenuePage = () => {
     return fasility.filter(
       (fasility) => filtered?.includes(fasility.value) ?? false
     );
-  }, [data]);
+  }, [avenueDetail.data]);
 
   const handleDateChange = (range) => {
-    setDate([
-      {
-        ...range.selection,
-      },
-    ]);
+    setDate([{ ...range.selection }]);
   };
 
-  if (isLoading || isFetching) {
+  const jumlahHarga = useMemo(() => {
+    return jumlahMalam * harga;
+  }, [jumlahMalam, harga]);
+
+  const handlePesan = useCallback((ev) => {
+    ev.preventDefault();
+    if(!userCrediental.value.id){
+      toaster.error("Anda harus login terlebih dahulu");
+      return;
+    }
+    createReservation({
+      userId : userCrediental.value.id,
+      listingId : id,
+      totalprice : jumlahHarga + (jumlahHarga * 20/100),
+      endDate : date[0].endDate,
+      startDate : date[0].startDate,
+    },{
+      onSuccess : () => {
+        toaster.success("Berhasil memesan tempat");
+        avenueDetail.refetch();
+        avenueReservations.refetch();
+      }
+    })
+  },[userCrediental, id, jumlahHarga, date ]);
+
+
+  if (avenueDetail.isLoading || avenueDetail.isFetching || avenueReservations.isLoading || avenueReservations.isFetching ) {
     return <Container size="md">Loading....</Container>;
   }
 
@@ -213,6 +289,7 @@ const DetailedAvenuePage = () => {
             <DatePicker
               isOpen={isOpenDatePick}
               ranges={date}
+              disabledDates={disabledDates}
               onReset={() =>
                 setDate([
                   {
@@ -261,6 +338,8 @@ const DetailedAvenuePage = () => {
                 className={
                   "w-full mt-7 bg-gradient-to-r from-rose-500 to-rose-600   text-white rounded-lg"
                 }
+                onClick={handlePesan}
+                isLoading={isCreatingReservation}
               >
                 <span className="font-medium">Pesan</span>
               </Button>
@@ -268,9 +347,7 @@ const DetailedAvenuePage = () => {
                 <div className="flex flex-col gap-2 mt-5">
                   <div className="flex justify-between">
                     <span className="text-gray-600">{`Rp.${harga} x  ${jumlahMalam} malam`}</span>
-                    <span className="text-gray-600">{`Rp.${
-                      harga * jumlahMalam
-                    }`}</span>
+                    <span className="text-gray-600">{`Rp.${jumlahHarga}`}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Biaya Langganan</span>
@@ -285,7 +362,8 @@ const DetailedAvenuePage = () => {
                   >
                     <span className="font-bold">Total Biaya</span>
                     <span className="font-bold">
-                      Rp.{harga * jumlahMalam + (harga * jumlahMalam * 20) / 100}
+                      Rp.
+                      {harga * jumlahMalam + (harga * jumlahMalam * 20) / 100}
                     </span>
                   </div>
                 </div>

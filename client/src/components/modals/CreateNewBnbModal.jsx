@@ -1,19 +1,12 @@
 import React, { memo, useEffect, useMemo, useState } from "react";
-import Modal from "../Modal";
+import {Modal, Tabs, GetLocation} from "/src/components/molecules";
+import { Button, RadioButton, Stepper, CheckBox, MainImageUpload, TextArea} from "/src/components/atoms";
 import { HiXMark} from "react-icons/hi2";
-import Tabs from "../Tabs";
-import Button from "../atoms/Button";
-import RadioButton from "../atoms/RadioButton";
 import { desc, fasility, type } from "../../data";
 import { useSelector } from "react-redux";
-import Stepper from "../atoms/Stepper";
 import toaster from "react-hot-toast";
-import CheckBox from "../atoms/CheckBox";
-import ImageUpload from "../atoms/MainImageUpload";
-import TextArea from "../atoms/TextArea";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { useMutation } from "@tanstack/react-query";
-import GetLocation from "../molecules/GetLocation";
 import AvenueApi from "../../api/services/avenueApi";
 
 const STEPS = {
@@ -374,7 +367,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
                     foto atau mengubahnya nanti
                   </p>
                   <div className="mt-8  gap-3">
-                    <ImageUpload
+                    <MainImageUpload
                       className="w-full aspect-[7/5]"
                       image={images}
                       setter={setImages}

@@ -5,7 +5,7 @@ import React, {
   useEffect,
 } from "react";
 import { Transition } from "@headlessui/react";
-import useClickOutside from "../hooks/useClickOutside";
+import useClickOutside from "../../hooks/useClickOutside";
 
 const ModalContext = createContext({
   isOpen: false,

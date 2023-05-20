@@ -1,6 +1,6 @@
 import { Transition } from '@headlessui/react';
 import React, { Fragment, createContext, useContext, useState } from 'react'
-import useClickOutside from "../hooks/useClickOutside";
+import useClickOutside from "/src/hooks/useClickOutside";
 
 const DropdownContext = createContext({
   isOpen: false,
