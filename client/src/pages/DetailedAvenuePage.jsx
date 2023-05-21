@@ -1,31 +1,39 @@
 import React, { useCallback, useMemo, useState } from "react";
-import {Container, Map, Image, Box, UpperlinedDiv, Button} from "/src/components/atoms";
+import {
+  Container,
+  Map,
+  Image,
+  Box,
+  UpperlinedDiv,
+  Button,
+} from "/src/components/atoms";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQueries } from "@tanstack/react-query";
 import AvenueApi from "../api/services/avenueApi";
 import { type as tipe, fasility } from "./../data/index";
-import { addDays,  differenceInDays, eachDayOfInterval } from "date-fns";
+import { add, addDays, differenceInDays, eachDayOfInterval } from "date-fns";
 import ReservationApi from "./../api/services/reservationApi";
 import { IoMdPeople } from "react-icons/io";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import toaster from "react-hot-toast"
+import toaster from "react-hot-toast";
 import { FaBed } from "react-icons/fa";
 import { BiBed } from "react-icons/bi";
 import { MdBathtub } from "react-icons/md";
 import { CgMenuGridO } from "react-icons/cg";
-import {ImagesGallery, DatePicker} from "/src/components/modals";
+import { ImagesGallery, DatePicker } from "/src/components/modals";
 import { useSelector } from "react-redux";
 
 const DetailedAvenuePage = () => {
   const { id } = useParams();
 
-  const userCrediental = useSelector(state => state.user );
+  const userCrediental = useSelector((state) => state.user);
   const [isOpenGallery, setIsOpenGallery] = useState(false);
   const [isOpenDatePick, setIsOpenDatePick] = useState(false);
-  const {isLoading : isCreatingReservation , mutate: createReservation} = useMutation({
-    mutationFn : ReservationApi.newReservation,
-  });
+  const { isLoading: isCreatingReservation, mutate: createReservation } =
+    useMutation({
+      mutationFn: ReservationApi.newReservation,
+    });
 
   const [date, setDate] = useState([
     {
@@ -36,53 +44,68 @@ const DetailedAvenuePage = () => {
   ]);
 
   const preloadData = useQueries({
-    queries : [{
-      queryFn : () => AvenueApi.getAvenue({id}),
-      enabled : Boolean(id),
-      queryKey : ["avenue", id],
-      initialData : {}
-    }
-    ,{
-      queryFn : () => ReservationApi.getReservationsById({reservationID : id}),
-      enabled : Boolean(id),
-      queryKey : ["reservation", id],
-      initialData : []
-    }]
+    queries: [
+      {
+        queryFn: () => AvenueApi.getAvenueById({ avenueId : id }),
+        enabled: Boolean(id),
+        queryKey: ["avenue", id],
+        initialData: {},
+      },
+      {
+        queryFn: () =>
+          ReservationApi.getReservationsById({ reservationID: id }),
+        enabled: Boolean(id),
+        queryKey: ["reservation", id],
+        initialData: [],
+      },
+    ],
   });
 
   const avenueDetail = preloadData[0];
-  const avenueReservations =preloadData[1];
-
+  const avenueReservations = preloadData[1];
 
   const disabledDates = useMemo(() => {
     let dates = [];
     const mainRange = [new Date().getTime(), addDays(new Date(), 90).getTime()];
     const gap = [];
 
-    avenueReservations.data.forEach(reservation => {
+    avenueReservations.data.forEach((reservation) => {
       const range = eachDayOfInterval({
-        start : new Date(reservation.startDate),
-        end: new Date(reservation.endDate)
+        start: new Date(reservation.startDate),
+        end: new Date(reservation.endDate),
       });
-      dates = [...dates,...range];
+      dates = [...dates, ...range];
     });
 
-    const ranges = avenueReservations.data.map(reservation => {
-      return [new Date(reservation.startDate).getTime(), new Date(reservation.endDate).getTime()];
-    }).sort(([a,],[b,]) => a - b);
+    const ranges = avenueReservations.data
+      .map((reservation) => {
+        return [
+          new Date(reservation.startDate).getTime(),
+          new Date(reservation.endDate).getTime(),
+        ];
+      })
+      .sort(([a], [b]) => a - b);
 
     let [min, max] = mainRange;
-    for(const [start, end] of ranges){
-      if(min > max) break;
-      if(min < start) {
-        gap.push([min, addDays(start,-1).getTime()]);
+    for (const [start, end] of ranges) {
+      if (min > max) break;
+      if (min < start) {
+        if (differenceInDays(addDays(start, -1), min) >= 5) {
+          gap.push([min, addDays(min, 5).getTime()]);
+          min = addDays(min, 5).getTime();
+        } else {
+          gap.push([min, addDays(start, -1).getTime()]);
+          min = addDays(end, 1).getTime();
+        }
+      } else {
+        min = addDays(end, 1).getTime();
       }
-      min=  addDays(end, 1).getTime();
     }
     // end of range
-    if(min <= max) gap.push([min, addDays(min,5).getTime()]);
-    
-    const result =gap.filter(([a,b]) => differenceInDays(b,a) >= 5);
+    if (min <= max) {
+      gap.push([min, addDays(min, 5).getTime()]);
+    }
+    const result = gap.filter(([a, b]) => differenceInDays(b, a) >= 5);
 
     setDate([{
       key: "selection",
@@ -90,10 +113,10 @@ const DetailedAvenuePage = () => {
       endDate : new Date(result[0][1]),
     }])
     return dates;
+  }, [avenueReservations.data]);
 
-  } ,[avenueReservations.data]);
-  
-  const jumlahMalam = useMemo(() => differenceInDays(date[0].endDate, date[0].startDate),
+  const jumlahMalam = useMemo(
+    () => differenceInDays(date[0].endDate, date[0].startDate),
     [date]
   );
 
@@ -104,12 +127,12 @@ const DetailedAvenuePage = () => {
     deskripsi,
     available,
     fasilitas,
+    ownerId,
     harga,
     informasiDasar,
     ownerUsername,
     ownerProfilePicture,
   } = avenueDetail.data;
-
 
   const type = useMemo(
     () => [...tipe].filter((e) => e.value === available)[0],
@@ -136,29 +159,40 @@ const DetailedAvenuePage = () => {
     return jumlahMalam * harga;
   }, [jumlahMalam, harga]);
 
-  const handlePesan = useCallback((ev) => {
-    ev.preventDefault();
-    if(!userCrediental.value.id){
-      toaster.error("Anda harus login terlebih dahulu");
-      return;
-    }
-    createReservation({
-      userId : userCrediental.value.id,
-      listingId : id,
-      totalprice : jumlahHarga + (jumlahHarga * 20/100),
-      endDate : date[0].endDate,
-      startDate : date[0].startDate,
-    },{
-      onSuccess : () => {
-        toaster.success("Berhasil memesan tempat");
-        avenueDetail.refetch();
-        avenueReservations.refetch();
+  const handlePesan = useCallback(
+    (ev) => {
+      ev.preventDefault();
+      if (!userCrediental.value.id) {
+        toaster.error("Anda harus login terlebih dahulu");
+        return;
       }
-    })
-  },[userCrediental, id, jumlahHarga, date ]);
+      createReservation(
+        {
+          userId: userCrediental.value.id,
+          listingId: id,
+          ownerId,
+          totalprice: jumlahHarga + (jumlahHarga * 20) / 100,
+          endDate: date[0].endDate,
+          startDate: date[0].startDate,
+        },
+        {
+          onSuccess: () => {
+            toaster.success("Berhasil memesan tempat");
+            avenueDetail.refetch();
+            avenueReservations.refetch();
+          },
+        }
+      );
+    },
+    [userCrediental, id, jumlahHarga, date]
+  );
 
-
-  if (avenueDetail.isLoading || avenueDetail.isFetching || avenueReservations.isLoading || avenueReservations.isFetching ) {
+  if (
+    avenueDetail.isLoading ||
+    avenueDetail.isFetching ||
+    avenueReservations.isLoading ||
+    avenueReservations.isFetching
+  ) {
     return <Container size="md">Loading....</Container>;
   }
 

@@ -5,7 +5,7 @@ import {Container} from "/src/components/atoms";
 
 export default function IndexPage() {
   const { data, isLoading, isFetching } = useQuery({
-    queryFn: AvenueApi.getAvenue,
+    queryFn: AvenueApi.getAvenues,
     queryKey: ["avenues"],
     initialData: [],
   });

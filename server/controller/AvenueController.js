@@ -43,7 +43,7 @@ class AvenueController {
         });
         res.sendStatus(201);
       } catch (error) {
-        console.log(error)
+        console.log(error);
         res.sendStatus(500);
       }
       return;
@@ -52,44 +52,48 @@ class AvenueController {
   }
 
   static async getAvenueById(req, res) {
-    const { aid } = req.params;
-    if (aid) {
-      try {
-        const avenue = await AvenueModel.findById(aid);
-        if (!avenue) {
-          return res.status(404).json({
-            status: "error",
-            message: "Avenue not found",
-          });
+    const { avenueId } = req.params;
+
+    try {
+        const result = await AvenueModel.findById(avenueId);
+        if(!result){
+            return res.status(404).send({
+                status: "error",
+                message: "Avenue not found",
+            });
         }
 
-        const userData = await UserModel.findById(avenue.ownerId);
+        const userData = await UserModel.findById(result.ownerId);
 
-        return res.status(200).json({
-          status: "success",
-          message: "Avenue found",
-          data: {...avenue._doc, ownerProfilePicture : userData.profilePicture, ownerUsername:userData.username},
-        });
+         res.status(200).json({
+            status: "success",
+            message: "Avenue found",
+            data: {
+              ...result._doc,
+              ownerProfilePicture: userData.profilePicture,
+              ownerUsername: userData.username,
+            },
+          });
         
-      } catch (error) {
-        return res.status(500).send({
-          status: "error",
-          message: "Internal Server Error",
-          data: error,
-        });
-      }
+    } catch (error) {
+         res.status(500).send({
+            status: "error",
+            message: error.message,
+ 
+          });
     }
-
-    return res.status(400).send({
-      status: "error",
-      message: "Bad Request",
-    });
   }
 
-  static async getAllAvenue(req, res) {
-    try {
-      const avenue = await AvenueModel.find();
+  static async getAvenues(req, res) {
+    const {  ownerId } = req.query;
+    const query = {};
 
+    if (ownerId) query.ownerId = ownerId;
+
+    try {
+      const avenue = await AvenueModel.find({
+        ...query
+      });
       return res.status(200).json({
         status: "success",
         message: "Avenue found",
@@ -98,8 +102,7 @@ class AvenueController {
     } catch (error) {
       return res.status(500).send({
         status: "error",
-        message: "Internal Server Error",
-        data: error,
+        message: error.message,
       });
     }
   }
@@ -113,7 +116,6 @@ class AvenueController {
       res.sendStatus(500);
     }
   }
-
 }
 
 export default AvenueController;

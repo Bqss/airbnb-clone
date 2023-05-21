@@ -9,6 +9,10 @@ export const reservationSchema = new Schema({
         type: String,
         required: true
     },
+    ownerId: {
+        type: String,
+        required: true
+    },
     startDate: {
         type: Date,
         required: true

@@ -2,12 +2,13 @@ import ReservationModel from "./../models/ReservationModel.js";
 
 class ReservationController {
   static async newReservation(req, res) {
-    const { userId, listingId, startDate, endDate, totalprice } = req.body;
+    const { userId, listingId, startDate, ownerId ,  endDate, totalprice } = req.body;
     try {
       await ReservationModel.create({
         userId,
         listingId,
         startDate,
+        ownerId,
         endDate,
         totalprice,
       });
@@ -16,39 +17,44 @@ class ReservationController {
       res.status(500).json({ status : "error",message: err.message });
     }
   }
-  static async getReservationsById(req, res) {
-    const { id } = req.params;
-    try {
-      const result = await ReservationModel.find({
-        listingId : id
-      });
 
-      res.status(200).json({
-        status : "success",
-        message : "Request succes",
-        data : result
-      })
-    } catch (error) {
+  static async getReservations(req, res){
+    const {userId, listingId} = req.query;
+    const query = {};
+
+    if(userId) query.userId = userId;
+    if(listingId) query.listingId = listingId;
+
+    try{
+        const reservations = await ReservationModel.find({
+            ...query
+        });
+
+        res.status(200).json({
+            status : "success",
+            message : "Success get all reservations",
+            data : reservations
+        });
+    }catch(err){
         res.status(500).json({
-            status: "error",
-            message: error
-        })
+            status : "error",
+            message : err.message
+        }) ;
     }
   }
 
-  static async getAllReservations(req, res){
+  static async deleteAllReservation(req, res){
     try {
-        const result = await ReservationModel.find();
-        res.status(200).json({
-            status: "success",
-            message : "Success get all reservations",
-            data: result
+        await ReservationModel.deleteMany();
+        res.status(200).json({ 
+            status : "success",
+            message : "Success delete all reservations"
         })
     } catch (error) {
         res.status(500).json({
-            status : "failed",
-            message : error.message
-        })
+            status : "error",
+            message: error.message
+        });
     }
   }
 }

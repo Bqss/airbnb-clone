@@ -47,8 +47,8 @@ class AvenueApi {
     return result.data.data;
   }
 
-  static async getAvenue({ id }) {
-    const result = await AxiosInstance.get(`/avenues${id ? "/" + id : ""}`);
+  static async getAvenues({ownerId}){
+    const result = await AxiosInstance.get(`/avenues${ownerId ? "?ownerId="+ownerId  : ''}`)
     return result.data.data;
   }
 }
