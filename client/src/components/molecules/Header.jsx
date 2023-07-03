@@ -4,14 +4,31 @@ import {
   toggleOpenLoginModal,
   toggleOpenRegisterModal,
 } from "../../fitures/modalSlice";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import Dropdown from "./Dropdown";
 import { useDispatch } from "react-redux";
 import Button from "../atoms/Button";
+import toaster from "react-hot-toast"
 import Container from "../atoms/Container";
+import UserApi from "/src/api/services/userApi";
 
 export default function Header({ userData }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {mutate: attempLogout, isLoading} = useMutation({
+    mutationFn : UserApi.logout
+  });
+  const queryClient = useQueryClient();
+
+  const handleLogout = () => { 
+    attempLogout({},{
+      onSuccess : () => {
+        toaster.success("Logout successfull");
+        navigate("/");
+        queryClient.invalidateQueries(["currentUser"])
+      }
+    });
+  }
 
   return (
     <div className="border-b border-slate-200">
@@ -150,7 +167,7 @@ export default function Header({ userData }) {
                       AirBnb My Home
                     </Dropdown.Item>
                     <Dropdown.Item
-                      onClick={() => dispatch(toggleOpenRegisterModal())}
+                      onClick={handleLogout}
                     >
                       Logout
                     </Dropdown.Item>

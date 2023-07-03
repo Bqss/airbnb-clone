@@ -11,6 +11,11 @@ class UserApi {
         return result.data;
     }
 
+    static async logout (){
+        const result = await AxiosInstance.post("/auth/logout");
+        return result.data;
+    }
+
     static async register({username, email, password}){
        const result = await AxiosInstance.post("auth/register",{
             username,
@@ -21,7 +26,7 @@ class UserApi {
     }
 
     static async getUserById({id}){
-        const result = await AxiosInstance.get(`auth/user/${id}`);
+        const result = await AxiosInstance.get(`user/${id}`);
         return result.data;
     }
 

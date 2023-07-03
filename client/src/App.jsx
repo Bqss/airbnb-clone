@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import mainStore from "./store/main";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import DetailedAvenuePage from "./pages/DetailedAvenuePage";
+import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import { FavouritesPage, PropertiesPage, ReservationsPage, TripsPage } from "./pages";
 
 const queryClient = new QueryClient({
@@ -18,6 +19,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      
       <Provider store={mainStore}>
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -29,7 +31,9 @@ function App() {
             <Route path="/rooms/:id" element={<DetailedAvenuePage />} />
           </Route>
         </Routes>
+        <ReactQueryDevtools initialIsOpen={false} />
       </Provider>
+      
     </QueryClientProvider>
   );
 }

@@ -6,7 +6,7 @@ import { desc, fasility, type } from "../../data";
 import { useSelector } from "react-redux";
 import toaster from "react-hot-toast";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import AvenueApi from "../../api/services/avenueApi";
 
 const STEPS = {
@@ -27,6 +27,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
   });
 
   const { value } = useSelector((state) => state.user);
+  const queryClient = useQueryClient();
 
   const [currentStep, setCurrentStep] = useState(STEPS.CATEGORY);
   const [category, setCategory] = useState("");
@@ -143,6 +144,7 @@ const CreateNewBnbModal = ({ isOpen, onClose }) => {
             });
             toaster("success creating new bnb");
             onClose();
+            queryClient.invalidateQueries("avenues");
           },
         }
       );

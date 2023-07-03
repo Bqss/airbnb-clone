@@ -32,6 +32,10 @@ class ReservationApi {
     const result = await AxiosInstance.get(`/reservations?ownerId=${ownerId}`);
     return result.data.data;
   }
+  static async deleteReservationById({reservationID}){
+    const result = await AxiosInstance.delete(`/reservations/${reservationID}`);
+    return result.data;
+  }
 }
 
 export default ReservationApi;

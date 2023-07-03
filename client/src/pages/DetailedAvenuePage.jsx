@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import {
   Container,
   Map,
-  Image,
+
   Box,
   UpperlinedDiv,
   Button,
@@ -178,7 +178,6 @@ const DetailedAvenuePage = () => {
         {
           onSuccess: () => {
             toaster.success("Berhasil memesan tempat");
-            avenueDetail.refetch();
             avenueReservations.refetch();
           },
         }

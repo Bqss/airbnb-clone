@@ -47,9 +47,17 @@ class AvenueApi {
     return result.data.data;
   }
 
-  static async getAvenues({ownerId}){
-    const result = await AxiosInstance.get(`/avenues${ownerId ? "?ownerId="+ownerId  : ''}`)
-    return result.data.data;
+  static async getAvenues({ ownerId="", page=0, limit=12 }) {
+    const query = new URLSearchParams({ page, limit, ownerId});
+    const result = await AxiosInstance.get(
+      `/avenues?${query.toString()}`
+    );
+    return result.data;
+  }
+
+  static async deleteAvenueById({ avenueId }) {
+    const result = await AxiosInstance.delete(`/avenues/${avenueId}`);
+    return result.data;
   }
 }
 

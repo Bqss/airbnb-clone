@@ -1,7 +1,8 @@
 import React from "react";
 import Modal from "../molecules/Modal";
 import { GrFormPrevious } from "react-icons/gr";
-import {Image, Container} from "/src/components/atoms";
+import { Container} from "/src/components/atoms";
+import { ImageComponent } from "../atoms";
 
 
 const ImagesGallery = ({ open, onClose, images }) => {
@@ -29,7 +30,7 @@ const ImagesGallery = ({ open, onClose, images }) => {
         <div className="flex-1 overflow-y-auto">
           <Container size="sm" className="space-y-4">
             {images?.map((f, i) => (
-              <Image src={f.url} key={i} />
+              <ImageComponent src={f.url} key={i} />
             ))}
           </Container>
         </div>

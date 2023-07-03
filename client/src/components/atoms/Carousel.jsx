@@ -29,7 +29,7 @@ const Carousel = ({ children, total }) => {
       >
         <div className="h-[20%] absolute top-0 w-full bg-gradient-to-b pointer-events-none from-black/5  z-10 "></div>
         <div className="h-[20%] absolute w-full bg-gradient-to-t bottom-0 pointer-events-none  from-black/5  z-10 "></div>
-        <div className="flex flex-col justify-between absolute inset-0 pointer-events-none">
+        <div className="flex flex-col z-10 justify-between absolute inset-0 pointer-events-none">
           <div></div>
           <WithFade show={onHover} unmount={false}>
             <div className="flex px-2">

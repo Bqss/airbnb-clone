@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {Image, Carousel} from "/src/components/atoms";
+import {ImageComponent, Carousel} from "/src/components/atoms";
 
 const AvenueCard = ({ data }) => {
   return (
@@ -8,7 +8,7 @@ const AvenueCard = ({ data }) => {
       <Carousel total={data.foto.length}>
         {data.foto.map((foto, i) => (
           <Carousel.Panel i={i} key={i}>
-            <Image src={foto.url} alt={foto.name} key={i}/>
+            <ImageComponent imageFit="cover" src={foto.url} alt={foto.name} key={i}/>
           </Carousel.Panel>
         ))}
       </Carousel>
@@ -16,8 +16,8 @@ const AvenueCard = ({ data }) => {
         <span className=" font-medium">
           {`${data.alamat.state}, ${data.alamat.name}`}
         </span>
-        <span className="text-gray-400">Berjarak ... km</span>
-        <span className="text-gray-400">{`Rp.${data.harga}/ malam`}</span>
+        <span className="text-gray-500">Berjarak ... km</span>
+        <span className="text-gray-500">{`Rp.${data.harga}/ malam`}</span>
       </div>
       
     </Link>
