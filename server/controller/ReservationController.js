@@ -1,4 +1,4 @@
-import ReservationModel from "./../models/ReservationModel.js";
+import ReservationModel, { reservationSchema } from "./../models/ReservationModel.js";
 
 class ReservationController {
   static async newReservation(req, res) {
@@ -19,11 +19,12 @@ class ReservationController {
   }
 
   static async getReservations(req, res){
-    const {userId, listingId} = req.query;
+    const {userId, listingId, ownerId} = req.query;
     const query = {};
 
     if(userId) query.userId = userId;
     if(listingId) query.listingId = listingId;
+    if(ownerId) query.ownerId = ownerId;
 
     try{
         const reservations = await ReservationModel.find({
@@ -55,6 +56,33 @@ class ReservationController {
             status : "error",
             message: error.message
         });
+    }
+  }
+
+  static async deleteReservationById(req, res){
+    const {reservationId} = req.params;
+
+    if(!reservationId){
+        return res.status(403).send({
+            status : "failed",
+            message : "ID is empty"
+        })
+    }
+
+    try {
+        await ReservationModel.deleteMany({
+            _id :reservationId
+        });
+
+        res.status(200).send({
+            status : "success",
+            message: "success delete reservation"
+        });
+    } catch (error) {
+        res.status(500).send({
+            status : "failed",
+            message: error.message
+        })
     }
   }
 }

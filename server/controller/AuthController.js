@@ -17,8 +17,11 @@ class AuthController {
         password: bcrypt.hashSync(password, bcryptSalt),
       });
       res.sendStatus(201);
-    } catch (e) {
-      res.status(500).json("server error");
+    } catch (err) {
+      res.status(500).json({
+        status: "error",
+        message: err.message,
+      });
     }
   }
 
@@ -74,7 +77,20 @@ class AuthController {
     }
   }
 
-  static async logout(req, res) {}
+  static async logout(req, res) {
+    try {
+        res.clearCookie("airBnbClone_token");
+        res.status(200).send({
+            status : "succes",
+            message : "logout success"
+        }) 
+    } catch (error) {
+        res.status(500).send({
+            status: "failed",
+            message: "server error"
+        })
+    }
+  }
 }
 
 export default AuthController;

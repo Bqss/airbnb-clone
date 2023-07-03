@@ -85,19 +85,35 @@ class AvenueController {
   }
 
   static async getAvenues(req, res) {
-    const {  ownerId } = req.query;
+    const { ownerId , page , limit } = req.query;
     const query = {};
-
+    let result = {};
+    
     if (ownerId) query.ownerId = ownerId;
 
     try {
-      const avenue = await AvenueModel.find({
-        ...query
-      });
+      let avenues ;
+      const count = await AvenueModel.countDocuments({...query});
+      if(page && limit){
+        avenues = await AvenueModel.find({...query}).skip(page * limit).limit(limit);
+        if(page < Math.ceil(count/limit)-1){
+            result.next = {
+                page: Number(page) + 1,
+                limit : Number(limit),
+            }
+        }
+      }else{
+        avenues = await AvenueModel.find({
+            ...query
+          });
+      }
+
+      
       return res.status(200).json({
         status: "success",
         message: "Avenue found",
-        data: avenue,
+        data: avenues,
+        ...result
       });
     } catch (error) {
       return res.status(500).send({
