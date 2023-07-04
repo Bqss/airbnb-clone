@@ -1,33 +1,71 @@
 import UserModel from "./../models/UserModel.js"
 
 class UserController {
+
     static async getUserById(req, res){
+        let status, message, data = {}, kode;
         const {id} = req.params;
+        
         try {
             const user = await UserModel.findById(id);
-            if(!user) return res.sendStatus(404)
-            res.status(200).send(user);
+            kode = 200;
+            message = "success get user by id";
+            status = "success";
+            data = user;
+            if(!user) {
+                kode = 404;
+                message = "user not found";
+                status = "error";
+                return ;
+            }
+
         } catch (error) {
-            res.sendStatus(500);
+            kode = 500;
+            message = 'server error';
+            status = "error";
+        }finally{
+            res.status(kode).send({
+                status, message, data
+            })
         }
     }
 
     static async getAllUser(req, res){
+        let kode, status, message, data = {};
         try {
             const user = await UserModel.find();
-            res.status(200).send(user)
+            kode = 200;
+            message = "success get all user";
+            status = "success";
+            data = user;
         } catch (error) {
-            res.sendStatus(500);
+            kode = 500;
+            message = 'server error';
+            status = "error";
+        }finally{
+            res.status(kode).send({
+                status, message, data
+            })
         }
+        
     }
 
     static async deleteUser(req, res){
+        let kode, status, message, data = {};
         const {id} = req.params;
         try {
             const user = await UserModel.deleteOne({_id: id});
-            res.sendStatus(200);
+            kode = 200;
+            message = "success delete user";
+            status = "success";
         } catch (error) {
-            res.sendStatus(500);
+            kode = 500;
+            message = 'server error';
+            status = "error";
+        }finally{
+            res.status(kode).send({
+                status, message, data
+            })
         }
     }
 }

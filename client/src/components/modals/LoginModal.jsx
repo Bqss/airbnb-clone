@@ -50,6 +50,7 @@ const LoginModal = ({ isOpen, onClose }) => {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      appear
       transition={{
         enter: "transition-all duration-500",
         enterFrom: "opacity-0 translate-y-full",

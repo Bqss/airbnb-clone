@@ -133,6 +133,43 @@ class AvenueController {
       res.sendStatus(500);
     }
   }
+
+  static async addFavorite(req, res) {
+    const { aid } = req.params;
+    const { userId } = req.body;
+    if(!userId) return res.sendStatus(403);
+    try {
+        await AvenueModel.findByIdAndUpdate(aid,{ $push : {favourites : userId}});
+        res.sendStatus(200);
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500);
+    }
+  }
+
+  static async removeFavorite(req, res) {
+    const { aid, userId } = req.params;
+    if(!userId) return res.sendStatus(403);
+    try {
+        await AvenueModel.findByIdAndUpdate(aid,{ $pull : {favourites : userId}});
+        res.sendStatus(200);
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500);
+    }
+  }
+
+  static async getAllFavourites(req, res){
+    const {userId} = req.params ;
+    if(!userId) return res.sendStatus(403);
+    try{
+        const avenues  =await AvenueModel.find({favourites : userId});
+        res.status(200).json({data: avenues})
+    }catch(error){
+        console.log(error)
+        res.sendStatus(500);
+    }
+  }
 }
 
 export default AvenueController;

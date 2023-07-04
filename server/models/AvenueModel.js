@@ -54,6 +54,7 @@ export const avenueSchema = Schema({
     },
     judul: String,
     deskripsi: String,
+    favourites : [String],
     harga: Number ,
     reservations : {
         type : [reservationSchema],

@@ -59,6 +59,17 @@ class AvenueApi {
     const result = await AxiosInstance.delete(`/avenues/${avenueId}`);
     return result.data;
   }
+
+  static async addToFavorite({ avenueId, userId }) {
+    const result = await AxiosInstance.post(`/avenues/${avenueId}/favorite`, {
+      userId,
+    });
+    return result.data;
+  }
+  static async removeFromFavorite({ avenueId, userId }) {
+    const result = await AxiosInstance.delete(`/avenues/${avenueId}/favorite/${userId}`);
+    return result.data;
+  }
 }
 
 export default AvenueApi;

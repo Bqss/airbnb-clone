@@ -2,6 +2,7 @@ import ReservationModel, { reservationSchema } from "./../models/ReservationMode
 
 class ReservationController {
   static async newReservation(req, res) {
+    let status, message, data = {}, kode;
     const { userId, listingId, startDate, ownerId ,  endDate, totalprice } = req.body;
     try {
       await ReservationModel.create({
@@ -12,14 +13,23 @@ class ReservationController {
         endDate,
         totalprice,
       });
-      res.status(201).json({ status: "success", message: "Reservation created successfully" });
+      kode = 201;
+      message = "success create reservation";
+      status = "success";
     } catch (err) {
-      res.status(500).json({ status : "error",message: err.message });
+        kode = 500;
+        status = "error";
+        message = "server error";
+    }finally{
+        res.status(kode).send({
+            status, message, data
+        })
     }
   }
 
   static async getReservations(req, res){
     const {userId, listingId, ownerId} = req.query;
+    let status, message, data = {}, kode;
     const query = {};
 
     if(userId) query.userId = userId;
@@ -30,17 +40,20 @@ class ReservationController {
         const reservations = await ReservationModel.find({
             ...query
         });
+        kode = 200;
+        message = "success get all reservations";
+        status = "success";
+        data = reservations;
 
-        res.status(200).json({
-            status : "success",
-            message : "Success get all reservations",
-            data : reservations
-        });
+    
     }catch(err){
-        res.status(500).json({
-            status : "error",
-            message : err.message
-        }) ;
+        kode = 500;
+        message = "server error";
+        status = "error";
+    }finally{
+        res.status(kode).send({
+            status, message, data
+        })
     }
   }
 
@@ -61,12 +74,13 @@ class ReservationController {
 
   static async deleteReservationById(req, res){
     const {reservationId} = req.params;
+    let status, message, data = {}, kode;
 
     if(!reservationId){
-        return res.status(403).send({
-            status : "failed",
-            message : "ID is empty"
-        })
+        status = "failed";
+        kode = 403;
+        message = "ID is empty";
+        return 
     }
 
     try {
@@ -74,14 +88,16 @@ class ReservationController {
             _id :reservationId
         });
 
-        res.status(200).send({
-            status : "success",
-            message: "success delete reservation"
-        });
+        status = "success";
+        message = "success delete reservation";
+        kode = 200;
     } catch (error) {
-        res.status(500).send({
-            status : "failed",
-            message: error.message
+        status = "error";
+        kode = 500;
+        message = "server error";
+    }finally{
+        res.status(kode).send({
+            status, message, data
         })
     }
   }

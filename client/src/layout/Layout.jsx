@@ -32,6 +32,9 @@ export default function Layout() {
     onSuccess: (data) => {
       dispatch(setUser({ user: data }));
     },
+    onError: (data) => {
+      dispatch(setUser({ user :{}}));
+    },
   });
 
   return (
@@ -51,6 +54,7 @@ export default function Layout() {
               secondary: "white",
             },
           },
+          
         }}
       />
       <LoginModal

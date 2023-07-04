@@ -7,7 +7,7 @@ const ImageComponent = ({ src, alt="", className="", imageFit="contain",onClick 
  
 
   return (
-    <div className={' w-full h-full overflow-hidden'} onClick={onClick}>
+    <div className={' w-full h-full overflow-hidden relative'} onClick={onClick}>
       <img src={src} onLoad={() => setLoaded(true)} className={'relative w-full h-full '+ className} {...d} alt={alt} style={{objectFit : imageFit}} />
       {!loaded && <div className="bg-gray-300  absolute inset-0"></div>}
     </div> 
