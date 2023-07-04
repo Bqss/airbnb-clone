@@ -85,11 +85,12 @@ class AvenueController {
   }
 
   static async getAvenues(req, res) {
-    const { ownerId , page , limit } = req.query;
+    const { ownerId , page , limit, category } = req.query;
     const query = {};
     let result = {};
     
     if (ownerId) query.ownerId = ownerId;
+    if(category) query.kategori = category;
 
     try {
       let avenues ;

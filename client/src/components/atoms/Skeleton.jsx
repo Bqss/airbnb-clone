@@ -2,7 +2,7 @@ import React from 'react'
 
 const types = {
   "circle": "w-12 h-12 rounded-full",
-  "rect": " rounded-md",
+  "rect": " rounded-full",
 }
 
 

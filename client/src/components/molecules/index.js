@@ -6,3 +6,4 @@ export {default as Modal} from "./Modal"
 export {default as Tabs} from "./Tabs"
 export {default as ReservationCard} from "./ReservationCard";
 export {default as AvenueSkeleton} from "./AvenueSkeleton";
+export {default as DetailPageSkeleton} from "./DetailPageSkeleton"

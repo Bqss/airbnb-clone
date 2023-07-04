@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import {
   Container,
   Map,
-
+  ImageComponent,
   Box,
   UpperlinedDiv,
   Button,
@@ -22,7 +22,10 @@ import { BiBed } from "react-icons/bi";
 import { MdBathtub } from "react-icons/md";
 import { CgMenuGridO } from "react-icons/cg";
 import { ImagesGallery, DatePicker } from "/src/components/modals";
+import { DetailPageSkeleton } from "../components/molecules";
 import { useSelector } from "react-redux";
+
+
 
 const DetailedAvenuePage = () => {
   const { id } = useParams();
@@ -46,17 +49,15 @@ const DetailedAvenuePage = () => {
   const preloadData = useQueries({
     queries: [
       {
-        queryFn: () => AvenueApi.getAvenueById({ avenueId : id }),
+        queryFn: () => AvenueApi.getAvenueById({ avenueId: id }),
         enabled: Boolean(id),
         queryKey: ["avenue", id],
-        initialData: {},
       },
       {
         queryFn: () =>
           ReservationApi.getReservationsById({ reservationID: id }),
         enabled: Boolean(id),
-        queryKey: ["reservation", id],
-        initialData: [],
+        queryKey: ["reservations", id],
       },
     ],
   });
@@ -69,7 +70,7 @@ const DetailedAvenuePage = () => {
     const mainRange = [new Date().getTime(), addDays(new Date(), 90).getTime()];
     const gap = [];
 
-    avenueReservations.data.forEach((reservation) => {
+    avenueReservations?.data?.forEach((reservation) => {
       const range = eachDayOfInterval({
         start: new Date(reservation.startDate),
         end: new Date(reservation.endDate),
@@ -77,14 +78,15 @@ const DetailedAvenuePage = () => {
       dates = [...dates, ...range];
     });
 
-    const ranges = avenueReservations.data
-      .map((reservation) => {
-        return [
-          new Date(reservation.startDate).getTime(),
-          new Date(reservation.endDate).getTime(),
-        ];
-      })
-      .sort(([a], [b]) => a - b);
+    const ranges =
+      avenueReservations?.data
+        ?.map((reservation) => {
+          return [
+            new Date(reservation.startDate).getTime(),
+            new Date(reservation.endDate).getTime(),
+          ];
+        })
+        .sort(([a], [b]) => a - b) || [];
 
     let [min, max] = mainRange;
     for (const [start, end] of ranges) {
@@ -107,11 +109,13 @@ const DetailedAvenuePage = () => {
     }
     const result = gap.filter(([a, b]) => differenceInDays(b, a) >= 5);
 
-    setDate([{
-      key: "selection",
-      startDate : new Date(result[0][0]),
-      endDate : new Date(result[0][1]),
-    }])
+    setDate([
+      {
+        key: "selection",
+        startDate: new Date(result[0][0]),
+        endDate: new Date(result[0][1]),
+      },
+    ]);
     return dates;
   }, [avenueReservations.data]);
 
@@ -132,7 +136,7 @@ const DetailedAvenuePage = () => {
     informasiDasar,
     ownerUsername,
     ownerProfilePicture,
-  } = avenueDetail.data;
+  } = avenueDetail?.data || {};
 
   const type = useMemo(
     () => [...tipe].filter((e) => e.value === available)[0],
@@ -186,13 +190,8 @@ const DetailedAvenuePage = () => {
     [userCrediental, id, jumlahHarga, date]
   );
 
-  if (
-    avenueDetail.isLoading ||
-    avenueDetail.isFetching ||
-    avenueReservations.isLoading ||
-    avenueReservations.isFetching
-  ) {
-    return <Container size="md">Loading....</Container>;
+  if (avenueDetail.isLoading || avenueReservations.isLoading) {
+  return <DetailPageSkeleton></DetailPageSkeleton>;
   }
 
   return (
@@ -220,11 +219,12 @@ const DetailedAvenuePage = () => {
               if (i == 0) {
                 return (
                   <div className="row-span-2 col-span-2 h-full" key={i}>
-                    <Image
+                    <ImageComponent
                       onClick={() => setIsOpenGallery(true)}
                       className={
-                        "hover:brightness-75 aspect-square transition-all duration-200 cursor-pointer"
+                        "hover:brightness-75 aspect-square hover:scale-105 transition-all duration-200 cursor-pointer"
                       }
+                      imageFit="cover"
                       src={f.url}
                       alt={f.name}
                     />
@@ -232,12 +232,13 @@ const DetailedAvenuePage = () => {
                 );
               }
               return (
-                <Image
+                <ImageComponent
                   key={i}
                   onClick={() => setIsOpenGallery(true)}
                   className={
-                    "hover:brightness-75 aspect-square transition-all duration-200 cursor-pointer"
+                    "hover:brightness-75 aspect-square hover:scale-105 transition-all duration-200 cursor-pointer"
                   }
+                  imageFit="cover"
                   src={f.url}
                   alt={f.name}
                 />
@@ -384,9 +385,8 @@ const DetailedAvenuePage = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Biaya Langganan</span>
-                    <span className="text-gray-600">{`Rp.${
-                      (harga * jumlahMalam * 20) / 100
-                    }`}</span>
+                    <span className="text-gray-600">{`Rp.${(harga * jumlahMalam * 20) / 100
+                      }`}</span>
                   </div>
                   <div
                     className={
@@ -408,5 +408,7 @@ const DetailedAvenuePage = () => {
     </>
   );
 };
+
+
 
 export default DetailedAvenuePage;

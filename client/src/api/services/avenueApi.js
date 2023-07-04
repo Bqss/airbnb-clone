@@ -47,8 +47,8 @@ class AvenueApi {
     return result.data.data;
   }
 
-  static async getAvenues({ ownerId="", page=0, limit=12 }) {
-    const query = new URLSearchParams({ page, limit, ownerId});
+  static async getAvenues({ ownerId="", page=0, limit=12, category="" }) {
+    const query = new URLSearchParams({ page, limit, ownerId, category});
     const result = await AxiosInstance.get(
       `/avenues?${query.toString()}`
     );
